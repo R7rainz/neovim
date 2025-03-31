@@ -21,16 +21,12 @@ Welcome to my personalized Neovim configuration! This setup is a carefully curat
 </div>
 
 <div>
-  # My Neovim Config
 
-## Dashboard
-![Dashboard](assets/nvim_dashboard.png)
+![Dashboard](./lua/assets/nvim_dashboard.png)
 
-## Tree View
-![Tree View](assets/nvim_tree.png)
+![Tree View](./lua/assets/nvim_tree.png)
 
-## Window Layout
-![Window Layout](assets/nvim_window.png)
+![Window Layout](./lua/assets/nvim_window.png)
 
 </div>
 

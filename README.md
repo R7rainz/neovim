@@ -21,10 +21,11 @@ Welcome to my personalized Neovim configuration! This setup is a carefully curat
 </div>
 
 <div>
-  <img src="/home/rainz/Pictures/nvim_dashboard.png" alt="dashboard"/>
-  <img src="/home/rainz/Pictures/nvim_tree.png" alt="tree"/>
-  <img src="/home/rainz/Pictures/nvim_window.png" alt="window"/>
+  <img src="/home/rainz/.config/nvim/lua/assets/nvim_dashboard.png" alt="dashboard"/>
+  <img src="/home/rainz/.config/nvim/lua/assets/nvim_tree.png" alt="tree"/>
+  <img src="/home/rainz/.config/nvim/lua/assets/nvim_window.png" alt="window"/>
 </div>
+
 
 <ul>
   <li>🧠 <strong>Built on LazyVim</strong>: Foundation of reliability with personal customizations</li>

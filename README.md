@@ -21,9 +21,9 @@ Welcome to my personalized Neovim configuration! This setup is a carefully curat
 </div>
 
 <div>
-  <img src="assets/nvim_dashboard.png" alt="dashboard"/>
-  <img src="assets/nvim_tree.png" alt="tree"/>
-  <img src="assets/nvim_window.png" alt="window"/>
+  ![Image](https://github.com/user-attachments/assets/60665f6e-6b53-4490-ad6f-4b693b9cb2d9)
+  ![Image](https://github.com/user-attachments/assets/337fd162-d3ca-4ee2-9479-c74d84849617)
+  ![Image](https://github.com/user-attachments/assets/b24ff033-2e88-4134-8561-a498e15d5b3e)
 </div>
 
 

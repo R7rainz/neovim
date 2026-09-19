@@ -1,13 +1,24 @@
 local keymaps = require("config.keymaps")
 local starter = require("mini.starter")
 
-local header = [[
-                         静 け さ の 中 に
-                         強 さ が あ る
-
-                    富士の麓で、静かに作る
-                       不 動 心  ·  余 白
-]]
+local header_lines = {
+    "静 け さ の 中 に",
+    "強 さ が あ る",
+    "",
+    "富士の麓で、静かに作る",
+    "不 動 心  ·  余 白",
+}
+local header_width = 0
+for _, line in ipairs(header_lines) do
+    header_width = math.max(header_width, vim.fn.strdisplaywidth(line))
+end
+local header = table.concat(vim.tbl_map(function(line)
+    if line == "" then
+        return line
+    end
+    local left_pad = math.floor((header_width - vim.fn.strdisplaywidth(line)) / 2)
+    return string.rep(" ", left_pad) .. line
+end, header_lines), "\n")
 
 starter.setup({
     evaluate_single = true,

@@ -1,0 +1,386 @@
+*nvim2.txt*  A small Neovim 0.12 IDE for Omarchy
+
+==============================================================================
+CONTENTS                                                        *nvim2*
+
+1. Start ..................................................... |nvim2-start|
+2. Keybindings ............................................. |nvim2-keymaps|
+3. Plugins ................................................. |nvim2-plugins|
+4. LSP, linting, and formatting ................................. |nvim2-lsp|
+5. Treesitter ........................................... |nvim2-treesitter|
+6. Themes ................................................... |nvim2-themes|
+7. Customization ......................................... |nvim2-customize|
+8. Troubleshooting ........................................... |nvim2-health|
+
+==============================================================================
+1. START                                                        *nvim2-start*
+
+This config targets Neovim 0.12+ and uses its native package manager and LSP
+client. There is no lazy.nvim, packer, or Mason.
+
+Launch it normally: >sh
+
+    nvim
+
+The first launch clones the plugins declared in `lua/config/plugins.lua` and
+installs the configured Treesitter parsers. Git and Internet access are needed
+for that first launch.
+
+Useful entry points: >vim
+
+    :ConfigDocs              open this manual
+    :checkhealth nvim2       check tools used by this config
+    :checkhealth vim.lsp     inspect enabled and attached language servers
+    :ConformInfo             inspect formatters for the current buffer
+    :LspInfo                 inspect language clients
+
+Press `<Space>?` for the complete keybinding section. Press `<Space>` and wait
+for the which-key popup when you only need a quick reminder.
+
+==============================================================================
+2. KEYBINDINGS                                                *nvim2-keymaps*
+
+The leader key is Space. Existing mappings from the previous config are kept.
+
+FILES AND SEARCH
+
+    <Space><Tab>   Toggle the file explorer at the project root
+    Enter          Open a file and close the explorer
+    l              Enter a directory
+    h/H            Go back within the project; no-op at the project root
+    <Space>e       Find files in the working directory
+    <Space>ff      Find files in the working directory
+    <Space>fP      Search project directories under your home directory
+    <Space>fg      Live grep
+    <Space>fw      Live grep (alternate mnemonic)
+    <Space>fb      Open buffers
+    <Space>fh      Search help tags
+    <Space>fr      Recent files
+    <Space>fA      Find files under home
+    <Space>fp      Find installed plugin files
+    <Space>fs      LSP document symbols
+    <Space>ws      LSP workspace symbols
+    s              Flash jump
+    S              Flash Treesitter selection
+
+BUFFERS
+
+    <Tab>          Next buffer
+    <S-Tab>        Previous buffer
+    <C-x>          Close buffer
+    <Space>X       Force-close buffer
+    <Space>bo      Close every other buffer
+
+WINDOWS AND PANES
+
+    <C-h/j/k/l>    Focus the pane left/down/up/right
+    <A-h/l>        Shrink/grow pane horizontally
+    <A-j/k>        Shrink/grow pane vertically
+    <Space>w/      Vertical split
+    <Space>w-      Horizontal split
+    <Space>ww      Next pane
+    <Space>wx      Close pane
+    <Space>w=      Equalize pane sizes
+    <Space>wH/J/K/L> Move the current pane
+
+PICKER NAVIGATION
+
+    <C-n>/<C-p>    Next/previous result
+    <Tab>          Toggle result preview
+    <S-Tab>        Show picker information and all picker keys
+    <C-v>          Open in a vertical split
+    <C-s>          Open in a horizontal split
+    <C-t>          Open in a tab
+    <CR>           Open result
+    <Esc>          Close picker
+
+LSP AND DIAGNOSTICS
+
+    K              Hover documentation in a floating window
+    gd             Go to definition
+    gD             Go to declaration
+    gr             Find references
+    gi             Go to implementation
+    <Space>ca      Code action
+    <Space>rn      Rename symbol
+    <Space>D       Type definition
+    <Space>d       Diagnostics for the current line
+    [d / ]d        Previous/next diagnostic
+    <Space>dl      Put diagnostics in the location list
+    <Space>cf      Format the current buffer
+    <Space>uh      Toggle LSP inlay hints
+    <C-Space>      Trigger completion while inserting
+    <C-y>          Accept the selected completion
+    <C-e>          Cancel completion
+    <C-n>/<C-p>    Next/previous completion
+    <C-k>          Signature help while inserting
+
+TERMINAL
+
+    <Space>tt      Toggle a horizontal terminal
+    <Space>tv      Toggle a vertical terminal
+    <C-`>          Toggle a floating terminal
+    <Esc><Esc>     Leave terminal input mode
+    <C-h/j/k/l>    Move out of a terminal pane
+
+SESSIONS
+
+    <Space>ss      Save a session for the current directory
+    <Space>sl      Restore the current directory's session
+    <Space>sd      Delete the current directory's session
+    <Space>sf      Pick any saved session
+
+PACKAGES, UI, AND HELP
+
+    <Space>pp      Inspect installed plugins without network access
+    <Space>pu      Check for plugin updates
+    <Space>ut      Choose a dark theme
+    <Space>?       Open this keybinding reference
+    <Space>hd      Open the full config manual
+    <Space>hh      Run this config's health check
+
+DISCORD PRESENCE
+
+    <Space>dc      Restart Discord presence
+    <Space>dd      Disable Discord presence
+    <Space>de      Enable Discord presence
+
+QUIT AND SMALL CONVENIENCES
+
+    <Space>qq/qQ   Quit / force quit
+    <Space>qa/qA   Quit all / force quit all
+    <Space>tx      Close tab
+    <Space>cx      Close quickfix list
+    <Space>lx      Close location list
+    ;              Enter command mode
+    jk             Leave insert mode
+    <Esc>          Clear search highlighting
+
+The Fuji dashboard also accepts `f`, `p`, `r`, `g`, `c`, `s`, `n`, `u`, `h`,
+and `q` for files, projects, recent files, grep, config, session, new buffer,
+update, help, and quit.
+
+Launching `nvim .` automatically restores the saved session for that project
+and saves its buffers/layout again on exit. Plain `nvim file` is not replaced
+by an unrelated project session.
+
+==============================================================================
+3. PLUGINS                                                    *nvim2-plugins*
+
+Plugin declarations and their setup live in `lua/config/plugins.lua`. Neovim's
+|vim.pack| installs into `stdpath('data')/site/pack/core/opt` and records exact
+revisions in `nvim-pack-lock.json` beside `init.lua`.
+
+UPDATE
+
+Run `:lua vim.pack.update()` or press `<Space>pu`. Neovim opens a review buffer. Use
+`:write` to accept the proposed revisions or `:quit` to discard them, then run
+`:restart`. When nvim-treesitter changes, this config also updates its parsers.
+
+LIST OR INSPECT
+
+Run: >vim
+
+    :lua vim.pack.update(nil, { offline = true })
+
+Use `[[` and `]]` between plugin sections, `K` for details, and `gO` for the
+outline. `<Space>pp` opens the same view.
+
+INSTALL
+
+Add one source to the `vim.pack.add({...})` list: >lua
+
+    { src = github("owner/plugin.nvim") },
+
+Restart Neovim. Keep setup code beside the other setup calls unless it is large
+enough to deserve its own file.
+
+REMOVE
+
+1. Remove its entry from `vim.pack.add({...})`.
+2. Restart Neovim so the plugin is inactive.
+3. Delete it from disk: >vim
+
+    :lua vim.pack.del({ "plugin.nvim" })
+
+Do not edit `nvim-pack-lock.json` by hand.
+
+CURRENT PLUGINS
+
+    mini.nvim          dashboard, picker, explorer, UI, pairs, diff, sessions
+    nvim-lspconfig     maintained presets for Neovim's native LSP client
+    nvim-treesitter    parser and query installation
+    conform.nvim       formatter orchestration
+    which-key.nvim     discoverable leader mappings
+    flash.nvim         fast `s` navigation
+    gruvbox.nvim       Gruvbox Hard
+    presence.nvim      Discord Rich Presence
+
+==============================================================================
+4. LSP, LINTING, AND FORMATTING                                  *nvim2-lsp*
+
+Neovim owns the LSP client, completion menu, snippets, diagnostics, and inlay
+hints. nvim-lspconfig only supplies maintained server command/root defaults.
+Mason is intentionally absent: language servers are ordinary system/project
+tools and can be updated by the package manager that installed them.
+
+ENABLED SERVERS
+
+    lua_ls          Lua
+    vtsls           JavaScript, TypeScript, React, Next.js
+    eslint          JavaScript/TypeScript linting
+    tailwindcss     Tailwind classes in web projects
+    html/cssls      HTML and CSS
+    jsonls          JSON and JSONC
+    gopls           Go, with staticcheck analyses
+    clangd          C/C++, with clang-tidy
+
+INSTALL THE TOOLCHAIN ON OMARCHY/ARCH
+
+Install native tools: >sh
+
+    omarchy pkg add tree-sitter-cli lua-language-server stylua clang
+
+Install web language servers and formatter: >sh
+
+    npm install -g @vtsls/language-server typescript \
+      vscode-langservers-extracted @tailwindcss/language-server prettier
+
+Install or update Go's language server: >sh
+
+    go install golang.org/x/tools/gopls@latest
+
+Projects using ESLint still need their own ESLint package and configuration,
+normally `npm install --save-dev eslint`. Next.js, React, JSX, and TSX are
+handled by vtsls; no separate React or Next language server is required.
+
+COMPLETION
+
+The native completion menu uses `noinsert`, so the first LSP suggestion is only
+highlighted and never overwrites text while you type. Press Enter to accept it;
+Space dismisses the menu and inserts a literal space. Up/Down (or
+PageUp/PageDown) can choose another candidate when wanted. Automatic completion
+starts only for identifier characters and is suppressed inside comments;
+`<C-Space>` triggers it manually anywhere. `<C-y>` remains available as the
+native accept key.
+
+After installation, restart Neovim and run `:checkhealth vim.lsp`. Open a
+matching source file and use `:LspInfo` to verify attachment.
+
+FORMATTING
+
+Formatting runs on save. Web files use Prettier with a forced four-space tab
+width; C/C++ use clang-format with four spaces; Lua uses StyLua; Go uses gofmt
+(standard Go tabs displayed at width four). If an external formatter is absent,
+Conform falls back to an attached LSP formatter.
+
+    :ConformInfo          show formatter availability and logs
+    :FormatDisable        disable format-on-save globally
+    :FormatDisable!       disable it for only the current buffer
+    :FormatEnable         enable it again
+
+Server settings live in `lua/config/lsp.lua`; formatter settings live in
+`lua/config/plugins.lua` under `require("conform").setup`.
+
+==============================================================================
+5. TREESITTER                                              *nvim2-treesitter*
+
+Neovim provides highlighting, folds, and the parser runtime. nvim-treesitter
+installs matching parsers and query files. Configured languages cover Lua,
+TypeScript/JavaScript/TSX, HTML/CSS/JSON, Go, C/C++, shell, Markdown, Git,
+Vim, and Vim help.
+
+Useful commands: >vim
+
+    :TSInstall <language>     install another parser
+    :TSUpdate                 update every parser
+    :TSUninstall <language>   remove a parser
+    :checkhealth nvim-treesitter
+
+Add permanently wanted parsers to `languages` at the top of
+`lua/config/plugins.lua`.
+
+==============================================================================
+6. THEMES                                                    *nvim2-themes*
+
+The default `omarchy` colorscheme reads the active palette from:
+
+    ~/.local/state/omarchy/current/theme/colors.toml
+
+It therefore follows whichever Omarchy theme is active at the next Neovim
+start. Run `:colorscheme omarchy` after an Omarchy theme change to refresh the
+current session. Its fallback is the Kuro Japan palette, so the editor remains
+usable when launched outside Omarchy.
+
+Only one custom alternative is installed:
+
+    :colorscheme omarchy
+    :colorscheme gruvbox          configured with hard contrast
+    :Theme                        interactive chooser
+
+Neovim's built-in runtime colorschemes may still appear in `:colorscheme`
+completion; they are not installed plugins and do not add configuration bloat.
+
+To change the startup theme, edit `vim.g.nvim2_theme` in `init.lua`. Comments
+and functions are italicized where the selected colorscheme supports it.
+
+STATUSLINE AND TABLINE
+
+The statusline and buffer tabline use `mini.statusline` and `mini.tabline` with
+compact powerline blocks inspired by the Omarchy tmux and Starship setup.
+Their colors follow the active colorscheme automatically; the current buffer,
+modified buffers, git branch, diagnostics, LSP state, and cursor location each
+have distinct, quiet segments.
+
+==============================================================================
+7. CUSTOMIZATION                                            *nvim2-customize*
+
+The files are split by concern:
+
+    init.lua                    startup order and default theme
+    lua/config/options.lua      editor options and general autocommands
+    lua/config/plugins.lua      plugin list and plugin setup
+    lua/config/lsp.lua          language server settings
+    lua/config/keymaps.lua      all regular keybindings and commands
+    lua/config/sessions.lua     project session naming and auto restore/save
+    lua/config/ui.lua           Fuji dashboard
+    colors/omarchy.lua          Omarchy palette and highlight groups
+    doc/nvim2.txt               this manual
+
+Use `<Space>e` then search for the file you want, or press `c` on the dashboard
+to open `init.lua`. Source simple edits with `:source %`; restart after changing
+plugins, LSP activation, or startup order.
+
+Every listed development language is set to a four-column tab width. Project
+formatters can still impose their official format (notably gofmt uses tabs,
+which Neovim displays at width four).
+
+==============================================================================
+8. TROUBLESHOOTING                                            *nvim2-health*
+
+Start with: >vim
+
+    :checkhealth nvim2
+    :checkhealth vim.pack
+    :checkhealth vim.lsp
+    :checkhealth nvim-treesitter
+    :ConformInfo
+
+If a language server does not attach:
+
+1. Check its executable is on `$PATH` with `:echo exepath('server-name')`.
+2. Check `:LspInfo` and `:checkhealth vim.lsp`.
+3. Confirm the project contains the expected root marker such as `.git`,
+   `package.json`, `go.mod`, or `compile_commands.json`.
+
+If completion does not appear, use `<C-Space>` to trigger it. The best match is
+highlighted without replacing your text; press Enter to accept or Space to keep
+typing. If formatting is unavailable, run `:ConformInfo`; the report names the
+missing binary.
+
+Run the small config smoke test from a shell: >sh
+
+    NVIM2_SKIP_PARSERS=1 NVIM2_NO_PRESENCE=1 \
+      nvim --headless '+luafile ~/.config/nvim/scripts/check.lua'
+
+vim:tw=78:ts=8:noet:ft=help:norl:

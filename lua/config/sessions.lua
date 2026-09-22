@@ -1,9 +1,11 @@
 local M = {}
 
+-- Normalize paths before using them as project/session identifiers.
 local function full_path(path)
     return vim.fs.normalize(vim.fn.fnamemodify(path, ":p"))
 end
 
+-- Use the nearest Git root, but never treat the home directory as a project.
 function M.project_root(path)
     local cwd = full_path(path or vim.uv.cwd())
     local home = full_path(vim.env.HOME or vim.fn.expand("~"))
@@ -12,12 +14,14 @@ function M.project_root(path)
     return root == home and cwd or root
 end
 
+-- Stable readable name plus a collision-resistant path hash.
 function M.name(path)
     local root = M.project_root(path)
     local name = vim.fs.basename(root):gsub("[^%w_.-]", "_")
     return string.format("%s-%s.vim", name, vim.fn.sha256(root):sub(1, 8))
 end
 
+-- Configure MiniSessions and auto-restore/save for `nvim .`.
 function M.setup()
     require("mini.sessions").setup({
         autoread = false,

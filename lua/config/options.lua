@@ -1,5 +1,6 @@
 local opt = vim.opt
 
+-- Editor appearance and interaction.
 opt.number = true
 opt.relativenumber = true
 opt.cursorline = true
@@ -10,6 +11,7 @@ opt.clipboard = "unnamedplus"
 opt.confirm = true
 opt.hidden = true
 
+-- Four-column indentation; formatters keep language-specific rules.
 opt.tabstop = 4
 opt.shiftwidth = 4
 opt.softtabstop = 4
@@ -23,6 +25,7 @@ opt.inccommand = "split"
 opt.grepprg = "rg --vimgrep --smart-case"
 opt.grepformat = "%f:%l:%c:%m"
 
+-- Window layout and display details.
 opt.splitbelow = true
 opt.splitright = true
 opt.scrolloff = 8
@@ -37,6 +40,7 @@ opt.swapfile = false
 opt.backup = false
 opt.updatetime = 200
 opt.timeoutlen = 400
+-- Completion and floating-window behavior.
 -- Show the first completion as a highlighted candidate, but never insert it
 -- until Enter confirms it. This keeps comments, punctuation, and prose safe.
 opt.completeopt = { "menu", "menuone", "noinsert", "popup" }
@@ -47,6 +51,7 @@ opt.laststatus = 3
 opt.showmode = false
 opt.sessionoptions = { "buffers", "curdir", "folds", "help", "tabpages", "winsize", "terminal" }
 
+-- Small core autocommands.
 local group = vim.api.nvim_create_augroup("nvim2_core", { clear = true })
 
 vim.api.nvim_create_autocmd("TextYankPost", {

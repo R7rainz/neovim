@@ -2,6 +2,7 @@ local M = {}
 local map = vim.keymap.set
 local sessions = require("config.sessions")
 
+-- Search and project navigation helpers.
 function M.find_files(cwd)
     MiniPick.builtin.files({ tool = "rg" }, { source = { cwd = cwd or vim.uv.cwd() } })
 end
@@ -70,6 +71,7 @@ function M.open_config()
     vim.cmd.edit(vim.fn.stdpath("config") .. "/init.lua")
 end
 
+-- Buffer, explorer, and project-session helpers.
 local function close_other_buffers()
     local current = vim.api.nvim_get_current_buf()
     for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
@@ -100,6 +102,7 @@ end
 
 M.restore_project_session = restore_project_session
 
+-- Reusable terminal windows.
 local terminals = {}
 local toggle_terminal
 
@@ -156,6 +159,7 @@ toggle_terminal = function(kind)
     vim.cmd.startinsert()
 end
 
+-- Dark-theme chooser and user commands.
 local function pick_theme()
     local themes = {
         { label = "Omarchy (active desktop palette)", name = "omarchy" },
@@ -188,6 +192,7 @@ vim.api.nvim_create_user_command("FormatEnable", function()
 end, { desc = "Enable autoformat" })
 
 function M.setup()
+    -- Files and search.
     map("n", "<leader><Tab>", toggle_files, { desc = "File explorer" })
     map("n", "<leader>e", M.find_files, { desc = "Find files" })
     map("n", "<leader>ff", M.find_files, { desc = "Find files" })
@@ -216,6 +221,7 @@ function M.setup()
     map("n", "<leader>X", "<cmd>bdelete!<cr>", { desc = "Force close buffer" })
     map("n", "<leader>bo", close_other_buffers, { desc = "Close other buffers" })
 
+    -- Pane navigation and layout.
     map("n", "<C-h>", "<C-w>h", { desc = "Focus left pane" })
     map("n", "<C-j>", "<C-w>j", { desc = "Focus lower pane" })
     map("n", "<C-k>", "<C-w>k", { desc = "Focus upper pane" })
@@ -234,6 +240,7 @@ function M.setup()
     map("n", "<leader>wK", "<C-w>K", { desc = "Move window up" })
     map("n", "<leader>wL", "<C-w>L", { desc = "Move window right" })
 
+    -- Terminal toggles.
     map("n", "<leader>tt", function()
         toggle_terminal("horizontal")
     end, { desc = "Terminal horizontal" })
@@ -245,6 +252,7 @@ function M.setup()
     end, { desc = "Terminal float" })
     map("n", "<leader>tx", "<cmd>tabclose<cr>", { desc = "Close tab" })
 
+    -- Sessions.
     map("n", "<leader>ss", function()
         MiniSessions.write(session_name())
     end, { desc = "Save project session" })
@@ -256,6 +264,7 @@ function M.setup()
         MiniSessions.select("read")
     end, { desc = "Find session" })
 
+    -- Diagnostics, formatting, and code actions.
     map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line diagnostics" })
     map("n", "[d", function()
         vim.diagnostic.jump({ count = -1, float = true })
@@ -271,6 +280,7 @@ function M.setup()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
     end, { desc = "Toggle inlay hints" })
 
+    -- Flash navigation and UI/help commands.
     map({ "n", "x", "o" }, "s", function()
         require("flash").jump()
     end, { desc = "Flash jump" })

@@ -1,8 +1,10 @@
+-- Shared LSP client capabilities.
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 vim.lsp.config("*", { capabilities = capabilities })
 
+-- Language-server-specific settings.
 vim.lsp.config("lua_ls", {
     settings = {
         Lua = {
@@ -65,6 +67,7 @@ vim.lsp.config("eslint", {
     settings = { workingDirectory = { mode = "auto" } },
 })
 
+-- Servers enabled for matching project filetypes.
 vim.lsp.enable({
     "clangd",
     "cssls",
@@ -77,6 +80,7 @@ vim.lsp.enable({
     "vtsls",
 })
 
+-- Diagnostics shown in buffers and floating windows.
 vim.diagnostic.config({
     float = { border = "rounded", source = "if_many" },
     severity_sort = true,
@@ -93,6 +97,7 @@ vim.diagnostic.config({
     virtual_text = { prefix = "●", source = "if_many", spacing = 2 },
 })
 
+-- Buffer-local completion and navigation mappings.
 vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Native LSP completion and buffer mappings",
     callback = function(event)

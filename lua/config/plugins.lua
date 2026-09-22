@@ -1,3 +1,4 @@
+-- Parsers installed by nvim-treesitter.
 local languages = {
     "bash",
     "c",
@@ -27,6 +28,7 @@ local languages = {
 -- options are available (and before headless Neovim has an RPC socket).
 vim.g.presence_has_setup = 1
 
+-- Keep Treesitter parsers in sync after plugin updates.
 vim.api.nvim_create_autocmd("PackChanged", {
     desc = "Keep Treesitter parsers compatible with plugin updates",
     callback = function(event)
@@ -43,6 +45,7 @@ local function github(repo)
     return "https://github.com/" .. repo
 end
 
+-- Native package declarations. Keep this list intentionally small.
 vim.pack.add({
     { src = github("nvim-mini/mini.nvim") },
     { src = github("neovim/nvim-lspconfig") },
@@ -58,6 +61,7 @@ local icons = require("mini.icons")
 icons.setup()
 icons.mock_nvim_web_devicons()
 
+-- Pickers and file navigation.
 require("mini.pick").setup({
     options = { use_cache = true },
     window = {
@@ -114,6 +118,7 @@ require("mini.diff").setup({ view = { style = "sign" } })
 require("mini.indentscope").setup({ draw = { animation = require("mini.indentscope").gen_animation.none() } })
 require("config.sessions").setup()
 
+-- Statusline and tabline highlights.
 -- Keep the editor chrome in the same visual language as the Omarchy tmux and
 -- Starship setup: one clear mode pill, quiet context text, and no noisy empty
 -- separators or oversized blocks.
@@ -177,6 +182,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = setup_ui_highlights,
 })
 
+-- Statusline and buffer tabline content.
 local statusline = require("mini.statusline")
 statusline.setup({
     use_icons = true,
@@ -245,6 +251,7 @@ require("mini.tabline").setup({
     end,
 })
 
+-- Discoverable leader-key groups.
 require("which-key").setup({
     delay = 300,
     preset = "modern",
@@ -264,11 +271,13 @@ require("which-key").add({
     { "<leader>w", group = "Windows" },
 })
 
+-- Fast jump navigation.
 require("flash").setup({
     label = { rainbow = { enabled = true, shade = 3 } },
     modes = { char = { enabled = false } },
 })
 
+-- Format-on-save and formatter commands.
 require("conform").setup({
     default_format_opts = { lsp_format = "fallback", timeout_ms = 3000 },
     format_on_save = function(bufnr)
@@ -300,6 +309,7 @@ require("conform").setup({
     },
 })
 
+-- Theme, syntax parsers, and language highlighting.
 require("vague").setup({ transparent = false, bold = true, italic = true })
 require("nvim-treesitter").setup()
 vim.treesitter.language.register("json", "jsonc")
@@ -340,6 +350,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- Discord Rich Presence.
 local presence
 local presence_config = {
         auto_update = true,
@@ -387,6 +398,7 @@ if vim.env.NVIM2_NO_PRESENCE ~= "1" and not vim.env.SSH_CONNECTION and #vim.api.
     start_presence()
 end
 
+-- Apply the configured startup theme last so all UI modules see its colors.
 local ok = pcall(vim.cmd.colorscheme, vim.g.nvim2_theme)
 if not ok then
     vim.notify("Unknown theme '" .. vim.g.nvim2_theme .. "'; using omarchy", vim.log.levels.WARN)

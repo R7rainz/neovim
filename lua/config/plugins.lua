@@ -50,7 +50,7 @@ vim.pack.add({
     { src = github("stevearc/conform.nvim") },
     { src = github("folke/which-key.nvim") },
     { src = github("folke/flash.nvim") },
-    { src = github("ellisonleao/gruvbox.nvim") },
+    { src = github("vague-theme/vague.nvim") },
     { src = github("andweeb/presence.nvim"), version = "main" },
 }, { confirm = false, load = true })
 
@@ -300,11 +300,7 @@ require("conform").setup({
     },
 })
 
-require("gruvbox").setup({
-    contrast = "hard",
-    italic = { strings = false, comments = true, operators = false, folds = true },
-})
-
+require("vague").setup({ transparent = false, bold = true, italic = true })
 require("nvim-treesitter").setup()
 vim.treesitter.language.register("json", "jsonc")
 if vim.env.NVIM2_SKIP_PARSERS ~= "1" then

@@ -1,6 +1,7 @@
 local keymaps = require("config.keymaps")
 local starter = require("mini.starter")
 
+-- Japanese dashboard header; each line is centered by display width.
 local header_lines = {
     "静 け さ の 中 に",
     "強 さ が あ る",
@@ -20,6 +21,7 @@ local header = table.concat(vim.tbl_map(function(line)
     return string.rep(" ", left_pad) .. line
 end, header_lines), "\n")
 
+-- Dashboard content and actions.
 starter.setup({
     evaluate_single = true,
     header = header,
@@ -46,6 +48,7 @@ starter.setup({
     },
 })
 
+-- Single-key dashboard shortcuts.
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "ministarter",
     callback = function(event)

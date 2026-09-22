@@ -1,3 +1,4 @@
+-- Fallback palette; Omarchy overrides matching values from its active theme.
 local colors = {
     accent = "#d8785f",
     background = "#1a1b1f",
@@ -37,6 +38,7 @@ if ok then
     end
 end
 
+-- Base editor surfaces and cursor/UI state.
 vim.o.background = "dark"
 vim.cmd.highlight("clear")
 vim.g.colors_name = "omarchy"
@@ -123,6 +125,7 @@ set(0, "Underlined", { fg = colors.blue, underline = true })
 set(0, "Todo", { bg = colors.yellow, bold = true, fg = colors.darker_background })
 set(0, "Error", { fg = colors.bright_red })
 
+-- Diff and diagnostic signs.
 set(0, "DiffAdd", { bg = "#243029", fg = colors.bright_green })
 set(0, "DiffChange", { bg = "#2b2d36", fg = colors.bright_blue })
 set(0, "DiffDelete", { bg = "#352426", fg = colors.bright_red })
@@ -141,6 +144,7 @@ set(0, "DiagnosticUnderlineWarn", { sp = colors.bright_yellow, undercurl = true 
 set(0, "DiagnosticUnderlineInfo", { sp = colors.bright_blue, undercurl = true })
 set(0, "DiagnosticUnderlineHint", { sp = colors.bright_cyan, undercurl = true })
 
+-- Treesitter and LSP semantic groups.
 link("@annotation", "PreProc")
 link("@attribute", "PreProc")
 link("@boolean", "Boolean")
@@ -184,6 +188,7 @@ link("@lsp.type.comment", "Comment")
 link("@lsp.type.function", "Function")
 link("@lsp.type.method", "Function")
 
+-- Mini.nvim UI components.
 set(0, "MiniPickBorder", { fg = colors.muted })
 set(0, "MiniPickBorderBusy", { fg = colors.accent })
 set(0, "MiniPickBorderText", { bold = true, fg = colors.blue })

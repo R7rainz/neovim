@@ -213,7 +213,7 @@ CURRENT PLUGINS
     conform.nvim       formatter orchestration
     which-key.nvim     discoverable leader mappings
     flash.nvim         fast `s` navigation
-    gruvbox.nvim       Gruvbox Hard
+    vague.nvim         Vague dark colorscheme
     presence.nvim      Discord Rich Presence
 
 ==============================================================================
@@ -312,10 +312,10 @@ start. Run `:colorscheme omarchy` after an Omarchy theme change to refresh the
 current session. Its fallback is the Kuro Japan palette, so the editor remains
 usable when launched outside Omarchy.
 
-Only one custom alternative is installed:
+The configured dark colorschemes are:
 
     :colorscheme omarchy
-    :colorscheme gruvbox          configured with hard contrast
+    :colorscheme vague           low-contrast dark palette
     :Theme                        interactive chooser
 
 Neovim's built-in runtime colorschemes may still appear in `:colorscheme`

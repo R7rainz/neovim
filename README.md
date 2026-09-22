@@ -8,7 +8,7 @@ There is no `lazy.nvim`, Packer, or Mason.
 
 ## Features
 
-- Omarchy colorscheme plus Gruvbox Hard; no light themes or theme bundle.
+- Omarchy colorscheme plus Vague; no light themes or theme bundle.
 - Native LSP for Lua, TypeScript/JavaScript, React/Next.js, HTML/CSS/JSON, Go,
   C, and C++.
 - Safe completion: the first LSP result is highlighted, not inserted; Enter

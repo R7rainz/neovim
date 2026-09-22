@@ -213,9 +213,12 @@ statusline.setup({
             }
             local mode_group = mode_names[mode_hl] or "Nvim2StatusModeNormal"
             local function join(parts, separator)
-                return table.concat(vim.tbl_filter(function(value)
-                    return value ~= nil and value ~= ""
-                end, parts), separator)
+                return table.concat(
+                    vim.tbl_filter(function(value)
+                        return value ~= nil and value ~= ""
+                    end, parts),
+                    separator
+                )
             end
 
             local git = statusline.section_git({ trunc_width = 45, icon = "" })
@@ -226,9 +229,7 @@ statusline.setup({
             local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
             local search = statusline.section_searchcount({ trunc_width = 90 })
             local directory = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-            local session = vim.v.this_session ~= ""
-                    and "󰗼 " .. vim.fn.fnamemodify(vim.v.this_session, ":t:r")
-                or ""
+            local session = vim.v.this_session ~= "" and "󰗼 " .. vim.fn.fnamemodify(vim.v.this_session, ":t:r") or ""
 
             local context = join({ "󰉋 " .. directory, git, diff, diagnostics, lsp }, "  │  ")
             local right = join({ session, fileinfo, search }, "  │  ")
@@ -324,7 +325,7 @@ require("conform").setup({
 })
 
 -- Theme, syntax parsers, and language highlighting.
-require("vague").setup({ transparent = true, bold = true, italic = true })
+require("vague").setup({ transparent = true, bold = false, italic = true })
 
 local transparent_groups = {
     "Normal",
@@ -401,21 +402,21 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Discord Rich Presence.
 local presence
 local presence_config = {
-        auto_update = true,
-        client_id = "793271441293967371",
-        debounce_timeout = 10,
-        enable_line_number = false,
-        main_image = "file",
-        neovim_image_text = "Neovim beneath Mount Fuji",
-        show_time = true,
-        editing_text = "Crafting %s",
-        reading_text = "Reading %s",
-        file_explorer_text = "Exploring %s",
-        plugin_manager_text = "Tending the tool garden",
-        workspace_text = "Working in %s",
-        buttons = {
-            { label = "GitHub Profile", url = "https://github.com/r7rainz" },
-        },
+    auto_update = true,
+    client_id = "793271441293967371",
+    debounce_timeout = 10,
+    enable_line_number = false,
+    main_image = "file",
+    neovim_image_text = "Neovim beneath Mount Fuji",
+    show_time = true,
+    editing_text = "Crafting %s",
+    reading_text = "Reading %s",
+    file_explorer_text = "Exploring %s",
+    plugin_manager_text = "Tending the tool garden",
+    workspace_text = "Working in %s",
+    buttons = {
+        { label = "GitHub Profile", url = "https://github.com/r7rainz" },
+    },
 }
 
 local function start_presence()

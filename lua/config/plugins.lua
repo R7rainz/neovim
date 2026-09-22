@@ -66,8 +66,8 @@ require("mini.pick").setup({
     options = { use_cache = true },
     window = {
         config = function()
-            local height = math.max(1, math.floor(vim.o.lines * 0.62))
-            local width = math.max(1, math.floor(vim.o.columns * 0.72))
+            local height = math.max(1, math.floor(vim.o.lines * 0.68))
+            local width = math.max(1, math.floor(vim.o.columns * 0.78))
             return {
                 anchor = "NW",
                 border = "rounded",
@@ -78,6 +78,7 @@ require("mini.pick").setup({
             }
         end,
         prompt_prefix = "    ",
+        prompt_caret = "▏",
     },
 })
 require("mini.extra").setup()
@@ -175,6 +176,19 @@ local function setup_ui_highlights()
     set(0, "MiniTablineFill", { bg = palette.base, fg = palette.muted })
     set(0, "MiniTablineTabpagesection", { bg = palette.blue, bold = true, fg = palette.base })
     set(0, "MiniTablineTrunc", { bg = palette.base, bold = true, fg = palette.yellow })
+
+    -- Telescope-like picker hierarchy: quiet transparent body, bright prompt,
+    -- and one clear current-match block.
+    set(0, "MiniPickNormal", { bg = "NONE", fg = palette.foreground })
+    set(0, "MiniPickBorder", { bg = "NONE", fg = palette.block })
+    set(0, "MiniPickBorderBusy", { bg = "NONE", fg = palette.yellow })
+    set(0, "MiniPickBorderText", { bg = "NONE", bold = true, fg = palette.blue })
+    set(0, "MiniPickPrompt", { bg = "NONE", bold = true, fg = palette.bright })
+    set(0, "MiniPickPromptPrefix", { bg = "NONE", bold = true, fg = palette.yellow })
+    set(0, "MiniPickPromptCaret", { bg = "NONE", fg = palette.yellow })
+    set(0, "MiniPickMatchCurrent", { bg = palette.block, bold = true, fg = palette.bright })
+    set(0, "MiniPickMatchRanges", { bold = true, fg = palette.yellow })
+    set(0, "MiniPickPreviewLine", { bg = palette.block, fg = palette.bright })
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {

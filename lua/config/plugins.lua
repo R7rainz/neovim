@@ -310,7 +310,41 @@ require("conform").setup({
 })
 
 -- Theme, syntax parsers, and language highlighting.
-require("vague").setup({ transparent = false, bold = true, italic = true })
+require("vague").setup({ transparent = true, bold = true, italic = true })
+
+local transparent_groups = {
+    "Normal",
+    "NormalNC",
+    "NormalFloat",
+    "FloatBorder",
+    "FloatTitle",
+    "Pmenu",
+    "PmenuSbar",
+    "Folded",
+    "MsgSeparator",
+    "StatusLine",
+    "StatusLineNC",
+    "StatusLineTerm",
+    "StatusLineTermNC",
+    "TabLine",
+    "TabLineFill",
+    "WinBar",
+    "WinBarNC",
+}
+
+local function setup_transparency()
+    for _, group in ipairs(transparent_groups) do
+        local highlights = vim.api.nvim_get_hl(0, { name = group, link = false })
+        highlights.bg = "NONE"
+        vim.api.nvim_set_hl(0, group, highlights)
+    end
+end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    desc = "Keep theme surfaces transparent",
+    callback = setup_transparency,
+})
+
 require("nvim-treesitter").setup()
 vim.treesitter.language.register("json", "jsonc")
 if vim.env.NVIM2_SKIP_PARSERS ~= "1" then

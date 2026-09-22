@@ -159,7 +159,7 @@ end
 local function pick_theme()
     local themes = {
         { label = "Omarchy (active desktop palette)", name = "omarchy" },
-        { label = "Gruvbox Hard", name = "gruvbox" },
+        { label = "Vague (dark low-contrast)", name = "vague" },
     }
     vim.ui.select(themes, {
         prompt = "Dark theme",

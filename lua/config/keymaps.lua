@@ -173,6 +173,7 @@ local function pick_theme()
         end,
     }, function(item)
         if item then
+            vim.g.nvim2_theme = item.name
             vim.cmd.colorscheme(item.name)
         end
     end)

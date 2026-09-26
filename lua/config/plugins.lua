@@ -53,6 +53,7 @@ vim.pack.add({
     { src = github("stevearc/conform.nvim") },
     { src = github("folke/which-key.nvim") },
     { src = github("folke/flash.nvim") },
+    { src = github("rose-pine/neovim") },
     { src = github("vague-theme/vague.nvim") },
     { src = github("andweeb/presence.nvim"), version = "main" },
 }, { confirm = false, load = true })
@@ -325,6 +326,11 @@ require("conform").setup({
 })
 
 -- Theme, syntax parsers, and language highlighting.
+require("rose-pine").setup({
+    variant = "main",
+    dark_variant = "main",
+    styles = { bold = false, italic = true, transparency = true },
+})
 require("vague").setup({ transparent = true, bold = false, italic = true })
 
 local transparent_groups = {

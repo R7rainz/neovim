@@ -14,13 +14,14 @@ local supported_themes = { omarchy = true, vague = true, ["rose-pine"] = true }
 if not supported_themes[saved_theme] then
     saved_theme = nil
 end
-vim.g.nvim2_theme = vim.g.nvim2_theme or saved_theme or "omarchy"
+vim.g.nvim2_theme = saved_theme or vim.g.nvim2_theme or "omarchy"
 
 vim.api.nvim_create_autocmd("ColorScheme", {
     desc = "Persist the selected nvim2 theme",
     callback = function()
         local theme = vim.g.colors_name
         if supported_themes[theme] then
+            vim.g.nvim2_theme = theme
             pcall(vim.fn.mkdir, vim.fn.stdpath("state"), "p")
             pcall(vim.fn.writefile, { theme }, theme_file)
         end

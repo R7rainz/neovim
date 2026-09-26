@@ -8,8 +8,8 @@ There is no `lazy.nvim`, Packer, or Mason.
 
 ## Features
 
-- Omarchy colorscheme plus Vague; no light themes or theme bundle.
-- The selected Omarchy/Vague theme persists across restarts.
+- Omarchy, Vague, and Rosé Pine (dark) colorschemes; no light themes or theme bundle.
+- The selected dark theme persists across restarts.
 - Native LSP for Lua, TypeScript/JavaScript, React/Next.js, HTML/CSS/JSON, Go,
   C, and C++.
 - Safe completion: the first LSP result is highlighted, not inserted; Enter

@@ -213,6 +213,7 @@ CURRENT PLUGINS
     conform.nvim       formatter orchestration
     which-key.nvim     discoverable leader mappings
     flash.nvim         fast `s` navigation
+    rose-pine/neovim   Rosé Pine main dark colorscheme
     vague.nvim         Vague dark colorscheme
     presence.nvim      Discord Rich Presence
 
@@ -316,15 +317,16 @@ The configured dark colorschemes are:
 
     :colorscheme omarchy
     :colorscheme vague           low-contrast dark palette
+    :colorscheme rose-pine       Rosé Pine main dark palette
     :Theme                        interactive chooser
 
 Neovim's built-in runtime colorschemes may still appear in `:colorscheme`
 completion; they are not installed plugins and do not add configuration bloat.
 
-The selected Omarchy or Vague theme is saved in Neovim's state directory. Use
-`:Theme` or either `:colorscheme omarchy` / `:colorscheme vague`; the choice is
-restored on the next startup. Comments and functions are italicized where the
-selected colorscheme supports it.
+The selected Omarchy, Vague, or Rosé Pine theme is saved in Neovim's state
+directory. Use `:Theme` or one of the colorscheme commands above; the choice is
+restored on the next startup. Only dark variants are exposed. Comments and
+functions are italicized where the selected colorscheme supports it.
 
 STATUSLINE AND TABLINE
 

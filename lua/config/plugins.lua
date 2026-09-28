@@ -176,6 +176,7 @@ local function setup_ui_highlights()
     set(0, "MiniTablineFill", { bg = palette.base, fg = palette.muted })
     set(0, "MiniTablineTabpagesection", { bg = palette.blue, bold = true, fg = palette.base })
     set(0, "MiniTablineTrunc", { bg = palette.base, bold = true, fg = palette.yellow })
+    set(0, "DiagnosticLineError", { bg = palette.block })
 
     -- Telescope-like picker hierarchy: quiet transparent body, bright prompt,
     -- and one clear current-match block.

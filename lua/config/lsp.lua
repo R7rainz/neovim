@@ -67,6 +67,10 @@ vim.lsp.config("eslint", {
     settings = { workingDirectory = { mode = "auto" } },
 })
 
+vim.lsp.config("postgres_lsp", {
+    root_markers = { "postgres-language-server.jsonc", ".git" },
+})
+
 -- Servers enabled for matching project filetypes.
 vim.lsp.enable({
     "clangd",
@@ -76,6 +80,7 @@ vim.lsp.enable({
     "html",
     "jsonls",
     "lua_ls",
+    "postgres_lsp",
     "tailwindcss",
     "vtsls",
 })

@@ -10,7 +10,7 @@ vim.g.maplocalleader = ","
 local theme_file = vim.fn.stdpath("state") .. "/theme"
 local read_ok, saved_theme_lines = pcall(vim.fn.readfile, theme_file)
 local saved_theme = read_ok and saved_theme_lines[1] or nil
-local supported_themes = { omarchy = true, ["tokyonight-night"] = true }
+local supported_themes = { edge = true, omarchy = true, ["tokyonight-night"] = true }
 if not supported_themes[saved_theme] then
     saved_theme = nil
 end

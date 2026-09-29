@@ -234,17 +234,29 @@ ENABLED SERVERS
     jsonls          JSON and JSONC
     gopls           Go, with staticcheck analyses
     clangd          C/C++, with clang-tidy
+    postgres_lsp    PostgreSQL SQL completion, syntax checks, and linting
 
 INSTALL THE TOOLCHAIN ON OMARCHY/ARCH
 
 Install native tools: >sh
 
-    omarchy pkg add tree-sitter-cli lua-language-server stylua clang
+    omarchy pkg add tree-sitter-cli lua-language-server stylua clang \
+      postgresql pgformatter
 
 Install web language servers and formatter: >sh
 
     npm install -g @vtsls/language-server typescript \
       vscode-langservers-extracted @tailwindcss/language-server prettier
+
+Install the PostgreSQL language server: >sh
+
+    npm install -g @postgres-language-server/cli
+
+`psql` and `pg_format` come from the `postgresql` and `pgformatter` packages.
+For a project-aware database connection and lint rules, run this in the project
+root: >sh
+
+    postgres-language-server init
 
 Install or update Go's language server: >sh
 
@@ -271,8 +283,9 @@ FORMATTING
 
 Formatting runs on save. Web files use Prettier with a forced four-space tab
 width; C/C++ use clang-format with four spaces; Lua uses StyLua; Go uses gofmt
-(standard Go tabs displayed at width four). If an external formatter is absent,
-Conform falls back to an attached LSP formatter.
+(standard Go tabs displayed at width four); SQL uses PostgreSQL's `pg_format`.
+If an external formatter is absent, Conform falls back to an attached LSP
+formatter.
 
     :ConformInfo          show formatter availability and logs
     :FormatDisable        disable format-on-save globally
@@ -287,8 +300,8 @@ Server settings live in `lua/config/lsp.lua`; formatter settings live in
 
 Neovim provides highlighting, folds, and the parser runtime. nvim-treesitter
 installs matching parsers and query files. Configured languages cover Lua,
-TypeScript/JavaScript/TSX, HTML/CSS/JSON, Go, C/C++, shell, Markdown, Git,
-Vim, and Vim help.
+TypeScript/JavaScript/TSX, HTML/CSS/JSON, Go, C/C++, PostgreSQL SQL, shell,
+Markdown, Git, Vim, and Vim help.
 
 Useful commands: >vim
 

@@ -54,6 +54,7 @@ vim.pack.add({
     { src = github("stevearc/conform.nvim") },
     { src = github("folke/which-key.nvim") },
     { src = github("folke/flash.nvim") },
+    { src = github("sainnhe/edge") },
     { src = github("folke/tokyonight.nvim") },
     { src = github("andweeb/presence.nvim"), version = "main" },
 }, { confirm = false, load = true })
@@ -328,6 +329,11 @@ require("conform").setup({
 })
 
 -- Theme, syntax parsers, and language highlighting.
+vim.g.edge_better_performance = 1
+vim.g.edge_enable_italic = 1
+vim.g.edge_style = "default"
+vim.g.edge_transparent_background = 2
+
 require("tokyonight").setup({
     style = "night",
     transparent = true,

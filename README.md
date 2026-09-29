@@ -11,11 +11,12 @@ There is no `lazy.nvim`, Packer, or Mason.
 - Tokyo Night (dark) and Omarchy colorschemes; no light themes or theme bundle.
 - The selected dark theme persists across restarts.
 - Native LSP for Lua, TypeScript/JavaScript, React/Next.js, HTML/CSS/JSON, Go,
-  C, and C++.
+  C, C++, and PostgreSQL SQL files.
 - Safe completion: the first LSP result is highlighted, not inserted; Enter
   accepts it and Space keeps your own text.
 - Treesitter highlighting, folding, indentation, diagnostics, and inlay hints.
-- Prettier, StyLua, clang-format, gofmt, format-on-save, and ESLint LSP.
+- Prettier, StyLua, clang-format, gofmt, pgFormatter, format-on-save, and ESLint
+  plus PostgreSQL diagnostics/completion through the Postgres Language Server.
 - MiniFiles project-root explorer, MiniPick search/live grep, Flash jumps,
   Japanese dashboard, Discord presence, and automatic project sessions.
 - Starship/tmux-inspired statusline and tabline.
@@ -25,13 +26,15 @@ There is no `lazy.nvim`, Packer, or Mason.
 - Neovim 0.12 or newer
 - Git, `rg`, and `fd`
 - `tree-sitter` CLI and the language tools you use
+- `psql`, `pg_format`, and `postgres-language-server` for PostgreSQL SQL work
 
 On Omarchy/Arch, the baseline tools are:
 
 ```sh
-omarchy pkg add tree-sitter-cli lua-language-server stylua clang
+omarchy pkg add tree-sitter-cli lua-language-server stylua clang postgresql pgformatter
 npm install -g @vtsls/language-server typescript \
   vscode-langservers-extracted @tailwindcss/language-server prettier
+npm install -g @postgres-language-server/cli
 go install golang.org/x/tools/gopls@latest
 ```
 
@@ -49,6 +52,9 @@ nvim
 The first launch downloads the plugins declared in `lua/config/plugins.lua` and
 installs the configured Treesitter parsers. Internet access is only needed for
 that initial install and later updates.
+
+For a PostgreSQL project, run `postgres-language-server init` at its root to
+create the optional connection and lint configuration.
 
 ## Essential keys
 

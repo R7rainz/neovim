@@ -162,6 +162,7 @@ end
 -- Dark-theme chooser and user commands.
 local function pick_theme()
     local themes = {
+        { label = "Edge (dark)", name = "edge" },
         { label = "Omarchy (active desktop palette)", name = "omarchy" },
         { label = "Tokyo Night (dark)", name = "tokyonight-night" },
     }

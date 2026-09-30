@@ -154,6 +154,8 @@ local function setup_ui_highlights()
     set(0, "Nvim2StatusInfo", { bg = palette.base, fg = palette.blue })
     set(0, "Nvim2StatusFile", { bg = palette.base, fg = palette.bright })
     set(0, "Nvim2StatusLocation", { bg = palette.blue, bold = true, fg = palette.base })
+    set(0, "Nvim2StatusScrollTrack", { bg = palette.base, fg = palette.block })
+    set(0, "Nvim2StatusScrollThumb", { bg = palette.blue, fg = palette.base })
 
     local modes = {
         Normal = palette.yellow,
@@ -199,6 +201,39 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = setup_ui_highlights,
 })
 
+local function horizontal_scrollbar()
+    if vim.wo.wrap then
+        return ""
+    end
+
+    local width = vim.api.nvim_win_get_width(0)
+    local line_width = vim.fn.strdisplaywidth(vim.fn.getline("."))
+    if line_width <= width then
+        return ""
+    end
+
+    local track = math.min(20, math.max(10, math.floor(width / 5)))
+    local thumb = math.min(track, math.max(2, math.floor(track * width / line_width)))
+    local max_left = math.max(1, line_width - width)
+    local left = math.min(vim.fn.winsaveview().leftcol, max_left)
+    local start = math.floor((left / max_left) * (track - thumb))
+
+    return "↔ %#Nvim2StatusScrollTrack#"
+        .. string.rep("─", start)
+        .. "%#Nvim2StatusScrollThumb#"
+        .. string.rep("━", thumb)
+        .. "%#Nvim2StatusScrollTrack#"
+        .. string.rep("─", track - start - thumb)
+        .. "%*"
+end
+
+vim.api.nvim_create_autocmd({ "CursorMoved", "WinScrolled" }, {
+    desc = "Refresh the horizontal scrollbar",
+    callback = function()
+        vim.cmd.redrawstatus()
+    end,
+})
+
 -- Statusline and buffer tabline content.
 local statusline = require("mini.statusline")
 statusline.setup({
@@ -236,6 +271,10 @@ statusline.setup({
 
             local context = join({ "󰉋 " .. directory, git, diff, diagnostics, lsp }, "  │  ")
             local right = join({ session, fileinfo, search }, "  │  ")
+            local scrollbar = horizontal_scrollbar()
+            if scrollbar ~= "" then
+                right = join({ scrollbar, right }, "  │  ")
+            end
             local location = string.format("%d:%d", vim.fn.line("."), vim.fn.col("."))
 
             return statusline.combine_groups({

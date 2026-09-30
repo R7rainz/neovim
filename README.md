@@ -70,6 +70,7 @@ reference; press `<Space>` and wait for the which-key popup for a quick menu.
 | `<Space>fP` | Search project directories |
 | `<C-h/j/k/l>` | Move between panes |
 | `<Space>w/` / `<Space>w-` | Vertical / horizontal split |
+| `<Space>zh/zl` / `<Space>zH/zL` | Scroll long lines left/right or half-screen |
 | `gd` / `gr` / `K` | Definition / references / hover docs |
 | `<Space>cf` | Format the current buffer |
 | `<C-Space>` | Trigger completion |

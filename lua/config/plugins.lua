@@ -287,6 +287,7 @@ require("which-key").add({
     { "<leader>t", group = "Terminal / tabs" },
     { "<leader>u", group = "UI" },
     { "<leader>w", group = "Windows" },
+    { "<leader>z", group = "Horizontal scroll" },
 })
 
 -- Fast jump navigation.

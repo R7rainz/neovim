@@ -83,6 +83,12 @@ WINDOWS AND PANES
     <Space>w=      Equalize pane sizes
     <Space>wH/J/K/L> Move the current pane
 
+HORIZONTAL SCROLLING
+
+    <Space>zh/zl   Scroll one character left/right
+    <Space>zH/zL   Scroll half a screen left/right
+    Mouse wheel    Horizontal wheel scrolls six columns; Shift scrolls half-screen
+
 PICKER NAVIGATION
 
     <C-n>/<C-p>    Next/previous result

@@ -3,6 +3,7 @@ assert(vim.o.tabstop == 4 and vim.o.shiftwidth == 4, "four-space indentation is 
 assert(vim.tbl_contains({ "edge", "omarchy", "tokyonight-night" }, vim.g.colors_name), "configured colorscheme did not load")
 assert(vim.fn.exists(":Theme") == 2, ":Theme command is missing")
 assert(vim.fn.exists(":ConfigDocs") == 2, ":ConfigDocs command is missing")
+assert(vim.fn.exists(":NvimTreeToggle") == 2, "nvim-tree command is missing")
 assert(vim.fn.maparg("<leader>ff", "n") ~= "", "file picker mapping is missing")
 assert(vim.fn.maparg("<leader>fw", "n") ~= "", "live grep mapping is missing")
 assert(vim.fn.maparg("<leader>E", "n") ~= "", "side explorer mapping is missing")
@@ -12,7 +13,7 @@ assert(vim.fn.maparg("<C-S-Right>", "n") ~= "", "side explorer grow mapping is m
 assert(vim.fn.maparg("<C-h>", "n") ~= "", "pane navigation mapping is missing")
 assert(vim.fn.maparg("<leader>zh", "n") ~= "", "horizontal scrolling mapping is missing")
 assert(vim.fn.maparg("<S-ScrollWheelUp>", "n") ~= "", "mouse horizontal scrolling mapping is missing")
-assert(#vim.pack.get(nil, { info = false }) == 9, "unexpected plugin count")
+assert(#vim.pack.get(nil, { info = false }) == 10, "unexpected plugin count")
 
 print("nvim2: all checks passed")
 vim.cmd.qall()

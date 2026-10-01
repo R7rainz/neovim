@@ -49,6 +49,7 @@ end
 -- Native package declarations. Keep this list intentionally small.
 vim.pack.add({
     { src = github("nvim-mini/mini.nvim") },
+    { src = github("nvim-tree/nvim-tree.lua") },
     { src = github("neovim/nvim-lspconfig") },
     { src = github("nvim-treesitter/nvim-treesitter"), version = "main" },
     { src = github("stevearc/conform.nvim") },
@@ -62,6 +63,74 @@ vim.pack.add({
 local icons = require("mini.icons")
 icons.setup()
 icons.mock_nvim_web_devicons()
+
+local tree_api = require("nvim-tree.api")
+require("nvim-tree").setup({
+    hijack_directories = { enable = true, auto_open = true },
+    hijack_netrw = true,
+    disable_netrw = true,
+    sync_root_with_cwd = false,
+    respect_buf_cwd = false,
+    update_focused_file = { enable = true, update_root = false },
+    view = {
+        preserve_window_proportions = true,
+        side = "left",
+        signcolumn = "no",
+        width = 32,
+    },
+    renderer = {
+        group_empty = true,
+        indent_markers = { enable = false },
+        root_folder_label = false,
+        icons = {
+            git_placement = "after",
+            modified_placement = "after",
+            padding = { folder_arrow = " ", icon = " " },
+            show = { file = true, folder = true, folder_arrow = true, git = true, modified = true },
+            web_devicons = {
+                file = { enable = true, color = true },
+                folder = { enable = false, color = true },
+            },
+            glyphs = {
+                default = "",
+                folder = {
+                    arrow_closed = "",
+                    arrow_open = "",
+                    default = "",
+                    empty = "",
+                    empty_open = "",
+                    open = "",
+                },
+            },
+        },
+    },
+    filters = { dotfiles = false, git_ignored = false },
+    git = { enable = true, ignore = false, timeout = 500 },
+    diagnostics = {
+        enable = true,
+        show_on_dirs = true,
+        show_on_open_dirs = true,
+        icons = { error = "", hint = "󰌵", info = "", warning = "" },
+    },
+    actions = {
+        change_dir = { enable = false },
+        open_file = {
+            quit_on_open = false,
+            resize_window = false,
+            window_picker = { enable = false },
+        },
+    },
+    on_attach = function(bufnr)
+        tree_api.map.on_attach.default(bufnr)
+        local opts = { buffer = bufnr, noremap = true, silent = true, nowait = true }
+        vim.keymap.set("n", "h", tree_api.node.navigate.parent_close, vim.tbl_extend("force", opts, { desc = "Go to parent" }))
+        vim.keymap.set("n", "l", tree_api.node.open.edit, vim.tbl_extend("force", opts, { desc = "Open" }))
+        vim.keymap.set("n", "<CR>", tree_api.node.open.edit, vim.tbl_extend("force", opts, { desc = "Open" }))
+        for _, lhs in ipairs({ "-", "P", "<C-]>" }) do
+            pcall(vim.keymap.del, "n", lhs, { buffer = bufnr })
+        end
+    end,
+})
 
 -- Pickers and file navigation.
 require("mini.pick").setup({

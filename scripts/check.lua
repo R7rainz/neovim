@@ -7,6 +7,7 @@ assert(vim.fn.maparg("<leader>ff", "n") ~= "", "file picker mapping is missing")
 assert(vim.fn.maparg("<leader>fw", "n") ~= "", "live grep mapping is missing")
 assert(vim.fn.maparg("<C-h>", "n") ~= "", "pane navigation mapping is missing")
 assert(vim.fn.maparg("<leader>zh", "n") ~= "", "horizontal scrolling mapping is missing")
+assert(vim.fn.maparg("<S-ScrollWheelUp>", "n") ~= "", "mouse horizontal scrolling mapping is missing")
 assert(#vim.pack.get(nil, { info = false }) == 9, "unexpected plugin count")
 
 print("nvim2: all checks passed")

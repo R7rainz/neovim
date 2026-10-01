@@ -65,6 +65,8 @@ reference; press `<Space>` and wait for the which-key popup for a quick menu.
 | Key | Action |
 | --- | --- |
 | `<Space><Tab>` | Project-root file explorer |
+| `<Space>E` | Toggle persistent side file explorer |
+| `<Space>uE` | Move the side explorer left/right |
 | `<Space>ff` | Find files |
 | `<Space>fw` | Live grep |
 | `<Space>fP` | Search project directories |
@@ -80,7 +82,9 @@ reference; press `<Space>` and wait for the which-key popup for a quick menu.
 | `<Space>hd` | Open the full manual |
 
 Inside MiniFiles, `Enter` opens a file and closes the explorer, `l` enters a
-directory, and `h`/`H` move upward without leaving the project root.
+directory, and `h`/`H` move upward without leaving the project root. `<Space>E`
+opens Neovim's built-in netrw as a persistent full-height side panel; press
+`<Space>uE` to move that panel between the left and right sides.
 
 When the current line is wider than the window, the statusline shows a compact
 horizontal scrollbar with the current viewport position. Hold Shift while

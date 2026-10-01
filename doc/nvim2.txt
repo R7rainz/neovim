@@ -45,7 +45,7 @@ The leader key is Space. Existing mappings from the previous config are kept.
 FILES AND SEARCH
 
     <Space><Tab>   Toggle the file explorer at the project root
-    <Space>E       Toggle the persistent side file explorer
+    <Space>E       Toggle the persistent nvim-tree side explorer
     <Space>uE      Move the side explorer left/right
     <C-S-Left/Right> Shrink/grow the side explorer
     Enter          Open a file and close the explorer
@@ -218,6 +218,7 @@ Do not edit `nvim-pack-lock.json` by hand.
 CURRENT PLUGINS
 
     mini.nvim          dashboard, picker, explorer, UI, pairs, diff, sessions
+    nvim-tree.lua      persistent side file explorer with icons and diagnostics
     nvim-lspconfig     maintained presets for Neovim's native LSP client
     nvim-treesitter    parser and query installation
     conform.nvim       formatter orchestration

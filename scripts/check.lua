@@ -4,6 +4,9 @@ assert(vim.tbl_contains({ "edge", "omarchy", "tokyonight-night" }, vim.g.colors_
 assert(vim.fn.exists(":Theme") == 2, ":Theme command is missing")
 assert(vim.fn.exists(":ConfigDocs") == 2, ":ConfigDocs command is missing")
 assert(vim.fn.exists(":NvimTreeToggle") == 2, "nvim-tree command is missing")
+local tree_config = require("nvim-tree.config").g
+assert(tree_config.view.width == "25%", "nvim-tree width is not 25%")
+assert(not tree_config.hijack_directories.auto_open, "nvim-tree auto-open must stay off for sessions")
 assert(vim.fn.maparg("<leader>ff", "n") ~= "", "file picker mapping is missing")
 assert(vim.fn.maparg("<leader>fw", "n") ~= "", "live grep mapping is missing")
 assert(vim.fn.maparg("<leader>E", "n") ~= "", "side explorer mapping is missing")

@@ -68,6 +68,7 @@ reference; press `<Space>` and wait for the which-key popup for a quick menu.
 | `<Space>E` | Toggle persistent side file explorer |
 | `<Space>uE` | Move the side explorer left/right |
 | `<C-S-Left>/<C-S-Right>` | Shrink/grow the side explorer |
+| `<Space>w[` / `<Space>w]` | Reliable side-explorer shrink/grow fallback |
 | `<Space>ff` | Find files |
 | `<Space>fw` | Live grep |
 | `<Space>fP` | Search project directories |
@@ -86,8 +87,9 @@ Inside MiniFiles, `Enter` opens a file and closes the explorer, `l` enters a
 directory, and `h`/`H` move upward without leaving the project root. `<Space>E`
 opens nvim-tree as a persistent full-height side panel; press `<Space>uE` to
 move that panel between the left and right sides. Use `h`/`l` to navigate,
-`<C-S-Left>`/`<C-S-Right>` to resize it, and `g?` inside the tree for its full
-file-operation menu.
+`<C-S-Left>`/`<C-S-Right>` to resize it. If your terminal does not pass those
+modified arrows through, use `<Space>w[` / `<Space>w]`; `g?` inside the tree
+opens its full file-operation menu.
 
 When the current line is wider than the window, the statusline shows a compact
 horizontal scrollbar with the current viewport position. Hold Shift while

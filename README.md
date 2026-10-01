@@ -84,9 +84,10 @@ reference; press `<Space>` and wait for the which-key popup for a quick menu.
 
 Inside MiniFiles, `Enter` opens a file and closes the explorer, `l` enters a
 directory, and `h`/`H` move upward without leaving the project root. `<Space>E`
-opens Neovim's built-in netrw as a persistent full-height side panel; press
-`<Space>uE` to move that panel between the left and right sides. It includes
-MiniIcons file/folder glyphs; use `<C-S-Left>` and `<C-S-Right>` to resize it.
+opens nvim-tree as a persistent full-height side panel; press `<Space>uE` to
+move that panel between the left and right sides. Use `h`/`l` to navigate,
+`<C-S-Left>`/`<C-S-Right>` to resize it, and `g?` inside the tree for its full
+file-operation menu.
 
 When the current line is wider than the window, the statusline shows a compact
 horizontal scrollbar with the current viewport position. Hold Shift while

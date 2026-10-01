@@ -66,7 +66,7 @@ icons.mock_nvim_web_devicons()
 
 local tree_api = require("nvim-tree.api")
 require("nvim-tree").setup({
-    hijack_directories = { enable = true, auto_open = true },
+    hijack_directories = { enable = true, auto_open = false },
     hijack_netrw = true,
     disable_netrw = true,
     sync_root_with_cwd = false,
@@ -76,7 +76,7 @@ require("nvim-tree").setup({
         preserve_window_proportions = true,
         side = "left",
         signcolumn = "no",
-        width = 32,
+        width = "25%",
     },
     renderer = {
         group_empty = true,
@@ -154,7 +154,7 @@ require("mini.pick").setup({
 })
 require("mini.extra").setup()
 require("mini.files").setup({
-    options = { permanent_delete = false, use_as_default_explorer = true },
+    options = { permanent_delete = false, use_as_default_explorer = false },
     mappings = {
         go_in_plus = "<CR>",
         go_out = "h",

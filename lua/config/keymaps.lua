@@ -130,6 +130,15 @@ local function switch_side_explorer()
     open_side_explorer(path)
 end
 
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "netrw",
+    callback = function(event)
+        map("n", "h", "-", { buffer = event.buf, remap = true, desc = "Go to parent directory" })
+        map("n", "l", "<CR>", { buffer = event.buf, remap = true, desc = "Open file or directory" })
+    end,
+    desc = "Keep netrw navigation consistent with MiniFiles",
+})
+
 local function session_name()
     return sessions.name()
 end

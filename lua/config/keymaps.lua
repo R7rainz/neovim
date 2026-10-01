@@ -88,6 +88,8 @@ local function toggle_files()
 end
 
 local side_explorer_right = false
+local side_explorer_width
+local side_explorer_icons = vim.api.nvim_create_namespace("nvim2_side_explorer_icons")
 
 local function side_explorer_window()
     for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -97,7 +99,28 @@ local function side_explorer_window()
     end
 end
 
-local function open_side_explorer(path)
+local function decorate_side_explorer(buf)
+    if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].filetype ~= "netrw" then
+        return
+    end
+
+    vim.api.nvim_buf_clear_namespace(buf, side_explorer_icons, 0, -1)
+    for line, text in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+        if line > 7 and text ~= "" then
+            local name = text:match("^%s*(.-)%s*$")
+            local directory = name:sub(-1) == "/"
+            local icon_name = name:gsub("/$", "")
+            local icon, highlight = MiniIcons.get(directory and "directory" or "file", icon_name)
+            vim.api.nvim_buf_set_extmark(buf, side_explorer_icons, line - 1, 0, {
+                priority = 100,
+                virt_text = { { icon .. " ", highlight } },
+                virt_text_pos = "inline",
+            })
+        end
+    end
+end
+
+local function open_side_explorer(path, width)
     local command = side_explorer_right and "Lexplore!" or "Lexplore"
     if path and path ~= "" then
         command = command .. " " .. vim.fn.fnameescape(path)
@@ -105,6 +128,10 @@ local function open_side_explorer(path)
     vim.cmd(command)
     local win = vim.api.nvim_get_current_win()
     vim.w[win].nvim2_side_explorer = true
+    if width then
+        vim.api.nvim_win_set_width(win, width)
+    end
+    side_explorer_width = vim.api.nvim_win_get_width(win)
     vim.cmd("wincmd p")
 end
 
@@ -113,7 +140,7 @@ local function toggle_side_explorer()
     if win then
         vim.api.nvim_win_close(win, true)
     else
-        open_side_explorer()
+        open_side_explorer(nil, side_explorer_width)
     end
 end
 
@@ -125,9 +152,24 @@ local function switch_side_explorer()
         return
     end
 
-    local path = vim.b[vim.api.nvim_win_get_buf(win)].netrw_curdir
+    local buffer = vim.api.nvim_win_get_buf(win)
+    local path = vim.b[buffer].netrw_curdir
+    local width = vim.api.nvim_win_get_width(win)
     vim.api.nvim_win_close(win, true)
-    open_side_explorer(path)
+    open_side_explorer(path, width)
+end
+
+local function resize_side_explorer(delta)
+    local win = side_explorer_window()
+    if not win then
+        return
+    end
+
+    local minimum = 16
+    local maximum = math.max(minimum, vim.o.columns - 24)
+    local width = math.max(minimum, math.min(maximum, vim.api.nvim_win_get_width(win) + delta))
+    vim.api.nvim_win_set_width(win, width)
+    side_explorer_width = width
 end
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -135,8 +177,23 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(event)
         map("n", "h", "-", { buffer = event.buf, remap = true, desc = "Go to parent directory" })
         map("n", "l", "<CR>", { buffer = event.buf, remap = true, desc = "Open file or directory" })
+        vim.schedule(function()
+            decorate_side_explorer(event.buf)
+        end)
     end,
     desc = "Keep netrw navigation consistent with MiniFiles",
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+    pattern = "*",
+    callback = function(event)
+        if vim.bo[event.buf].filetype == "netrw" then
+            vim.schedule(function()
+                decorate_side_explorer(event.buf)
+            end)
+        end
+    end,
+    desc = "Refresh side explorer icons",
 })
 
 local function session_name()
@@ -249,6 +306,12 @@ function M.setup()
     -- Files and search.
     map("n", "<leader><Tab>", toggle_files, { desc = "File explorer" })
     map("n", "<leader>E", toggle_side_explorer, { desc = "Toggle side explorer" })
+    map("n", "<C-S-Left>", function()
+        resize_side_explorer(-4)
+    end, { desc = "Shrink side explorer" })
+    map("n", "<C-S-Right>", function()
+        resize_side_explorer(4)
+    end, { desc = "Grow side explorer" })
     map("n", "<leader>e", M.find_files, { desc = "Find files" })
     map("n", "<leader>ff", M.find_files, { desc = "Find files" })
     map("n", "<leader>fg", M.live_grep, { desc = "Live grep" })

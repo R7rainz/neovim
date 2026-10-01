@@ -45,6 +45,8 @@ The leader key is Space. Existing mappings from the previous config are kept.
 FILES AND SEARCH
 
     <Space><Tab>   Toggle the file explorer at the project root
+    <Space>E       Toggle the persistent side file explorer
+    <Space>uE      Move the side explorer left/right
     Enter          Open a file and close the explorer
     l              Enter a directory
     h/H            Go back within the project; no-op at the project root

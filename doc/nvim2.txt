@@ -47,6 +47,7 @@ FILES AND SEARCH
     <Space><Tab>   Toggle the file explorer at the project root
     <Space>E       Toggle the persistent side file explorer
     <Space>uE      Move the side explorer left/right
+    <C-S-Left/Right> Shrink/grow the side explorer
     Enter          Open a file and close the explorer
     l              Enter a directory
     h/H            Go back within the project; no-op at the project root

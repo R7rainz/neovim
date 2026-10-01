@@ -103,9 +103,11 @@ local function place_tree()
         return
     end
 
+    local width = vim.api.nvim_win_get_width(win)
     local current = vim.api.nvim_get_current_win()
     vim.api.nvim_set_current_win(win)
     vim.cmd(tree_side_right and "wincmd L" or "wincmd H")
+    tree_api().tree.resize({ absolute = width })
     if vim.api.nvim_win_is_valid(current) then
         vim.api.nvim_set_current_win(current)
     end
@@ -119,6 +121,9 @@ local function toggle_side_explorer()
     end
 
     MiniFiles.close()
+    if vim.fn.isdirectory(vim.api.nvim_buf_get_name(0)) == 1 then
+        vim.cmd.enew()
+    end
     local editor = vim.api.nvim_get_current_win()
     api.tree.open({ focus = true, path = sessions.project_root(), update_root = false })
     vim.schedule(function()

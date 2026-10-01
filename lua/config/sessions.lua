@@ -47,6 +47,11 @@ function M.setup()
                 vim.cmd.cd(vim.fn.fnameescape(project))
                 if MiniSessions.detected[session] then
                     MiniSessions.read(session, { force = true, verbose = false })
+                else
+                    if vim.fn.isdirectory(vim.api.nvim_buf_get_name(0)) == 1 then
+                        vim.cmd.enew()
+                    end
+                    require("nvim-tree.api").tree.open({ path = project, update_root = false })
                 end
             end)
         end,

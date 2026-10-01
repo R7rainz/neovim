@@ -83,7 +83,8 @@ Inside MiniFiles, `Enter` opens a file and closes the explorer, `l` enters a
 directory, and `h`/`H` move upward without leaving the project root.
 
 When the current line is wider than the window, the statusline shows a compact
-horizontal scrollbar with the current viewport position.
+horizontal scrollbar with the current viewport position. Hold Shift while
+using the mouse wheel to scroll it left or right.
 
 Launching `nvim .` restores that project's saved buffers and layout, then saves
 them again on exit.

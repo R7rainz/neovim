@@ -87,6 +87,49 @@ local function toggle_files()
     end
 end
 
+local side_explorer_right = false
+
+local function side_explorer_window()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.w[win].nvim2_side_explorer then
+            return win
+        end
+    end
+end
+
+local function open_side_explorer(path)
+    local command = side_explorer_right and "Lexplore!" or "Lexplore"
+    if path and path ~= "" then
+        command = command .. " " .. vim.fn.fnameescape(path)
+    end
+    vim.cmd(command)
+    local win = vim.api.nvim_get_current_win()
+    vim.w[win].nvim2_side_explorer = true
+    vim.cmd("wincmd p")
+end
+
+local function toggle_side_explorer()
+    local win = side_explorer_window()
+    if win then
+        vim.api.nvim_win_close(win, true)
+    else
+        open_side_explorer()
+    end
+end
+
+local function switch_side_explorer()
+    side_explorer_right = not side_explorer_right
+    local win = side_explorer_window()
+    if not win then
+        vim.notify("Side explorer: " .. (side_explorer_right and "right" or "left"))
+        return
+    end
+
+    local path = vim.b[vim.api.nvim_win_get_buf(win)].netrw_curdir
+    vim.api.nvim_win_close(win, true)
+    open_side_explorer(path)
+end
+
 local function session_name()
     return sessions.name()
 end
@@ -196,6 +239,7 @@ end, { desc = "Enable autoformat" })
 function M.setup()
     -- Files and search.
     map("n", "<leader><Tab>", toggle_files, { desc = "File explorer" })
+    map("n", "<leader>E", toggle_side_explorer, { desc = "Toggle side explorer" })
     map("n", "<leader>e", M.find_files, { desc = "Find files" })
     map("n", "<leader>ff", M.find_files, { desc = "Find files" })
     map("n", "<leader>fg", M.live_grep, { desc = "Live grep" })
@@ -291,6 +335,7 @@ function M.setup()
     map("n", "<leader>uh", function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
     end, { desc = "Toggle inlay hints" })
+    map("n", "<leader>uE", switch_side_explorer, { desc = "Move side explorer left/right" })
 
     -- Flash navigation and UI/help commands.
     map({ "n", "x", "o" }, "s", function()

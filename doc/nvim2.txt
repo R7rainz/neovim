@@ -45,7 +45,7 @@ The leader key is Space. Existing mappings from the previous config are kept.
 FILES AND SEARCH
 
     <Space><Tab>   Toggle the file explorer at the project root
-    <Space>E       Toggle the persistent nvim-tree side explorer
+    <Space>E       Toggle the persistent 25%-wide nvim-tree side explorer
     <Space>uE      Move the side explorer left/right
     <C-S-Left/Right> Shrink/grow the side explorer
     <Space>w[/]     Reliable side-explorer shrink/grow fallback
@@ -171,8 +171,9 @@ The Fuji dashboard also accepts `f`, `p`, `r`, `g`, `c`, `s`, `n`, `u`, `h`,
 and `q` for files, projects, recent files, grep, config, session, new buffer,
 update, help, and quit.
 
-Launching `nvim .` automatically restores the saved session for that project
-and saves its buffers/layout again on exit. Plain `nvim file` is not replaced
+Launching `nvim .` automatically restores the saved session for that project,
+including the side explorer's open state, and saves its buffers/layout again on
+exit. Plain `nvim file` is not replaced
 by an unrelated project session.
 
 ==============================================================================

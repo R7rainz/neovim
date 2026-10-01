@@ -177,6 +177,9 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(event)
         map("n", "h", "-", { buffer = event.buf, remap = true, desc = "Go to parent directory" })
         map("n", "l", "<CR>", { buffer = event.buf, remap = true, desc = "Open file or directory" })
+        vim.wo.conceallevel = 2
+        vim.wo.concealcursor = "nvic"
+        vim.fn.matchadd("Conceal", [[\V│]], 20)
         vim.schedule(function()
             decorate_side_explorer(event.buf)
         end)

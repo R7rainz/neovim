@@ -51,6 +51,12 @@ opt.laststatus = 3
 opt.showmode = false
 opt.sessionoptions = { "buffers", "curdir", "folds", "help", "tabpages", "winsize", "terminal" }
 
+-- Keep the built-in side explorer compact and project-friendly.
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrw_keepdir = 1
+vim.g.netrw_winsize = 30
+
 -- Small core autocommands.
 local group = vim.api.nvim_create_augroup("nvim2_core", { clear = true })
 

@@ -87,117 +87,66 @@ local function toggle_files()
     end
 end
 
-local side_explorer_right = false
-local side_explorer_width
-local side_explorer_icons = vim.api.nvim_create_namespace("nvim2_side_explorer_icons")
+local tree_side_right = false
 
-local function side_explorer_window()
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        if vim.w[win].nvim2_side_explorer then
-            return win
-        end
-    end
+local function tree_api()
+    return require("nvim-tree.api")
 end
 
-local function decorate_side_explorer(buf)
-    if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].filetype ~= "netrw" then
+local function tree_window()
+    return tree_api().tree.winid()
+end
+
+local function place_tree()
+    local win = tree_window()
+    if not win then
         return
     end
 
-    vim.api.nvim_buf_clear_namespace(buf, side_explorer_icons, 0, -1)
-    for line, text in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
-        if line > 7 and text ~= "" then
-            local name = text:match("^%s*(.-)%s*$")
-            local directory = name:sub(-1) == "/"
-            local icon_name = name:gsub("/$", "")
-            local icon, highlight = MiniIcons.get(directory and "directory" or "file", icon_name)
-            vim.api.nvim_buf_set_extmark(buf, side_explorer_icons, line - 1, 0, {
-                priority = 100,
-                virt_text = { { icon .. " ", highlight } },
-                virt_text_pos = "inline",
-            })
-        end
+    local current = vim.api.nvim_get_current_win()
+    vim.api.nvim_set_current_win(win)
+    vim.cmd(tree_side_right and "wincmd L" or "wincmd H")
+    if vim.api.nvim_win_is_valid(current) then
+        vim.api.nvim_set_current_win(current)
     end
-end
-
-local function open_side_explorer(path, width)
-    local command = side_explorer_right and "Lexplore!" or "Lexplore"
-    if path and path ~= "" then
-        command = command .. " " .. vim.fn.fnameescape(path)
-    end
-    vim.cmd(command)
-    local win = vim.api.nvim_get_current_win()
-    vim.w[win].nvim2_side_explorer = true
-    if width then
-        vim.api.nvim_win_set_width(win, width)
-    end
-    side_explorer_width = vim.api.nvim_win_get_width(win)
-    vim.cmd("wincmd p")
 end
 
 local function toggle_side_explorer()
-    local win = side_explorer_window()
-    if win then
-        vim.api.nvim_win_close(win, true)
-    else
-        open_side_explorer(nil, side_explorer_width)
+    local api = tree_api()
+    if api.tree.is_visible() then
+        api.tree.close()
+        return
     end
+
+    MiniFiles.close()
+    local editor = vim.api.nvim_get_current_win()
+    api.tree.open({ focus = true, path = sessions.project_root(), update_root = false })
+    vim.schedule(function()
+        place_tree()
+        local tree = tree_window()
+        if vim.api.nvim_win_is_valid(editor) and editor ~= tree then
+            vim.api.nvim_set_current_win(editor)
+        end
+    end)
 end
 
 local function switch_side_explorer()
-    side_explorer_right = not side_explorer_right
-    local win = side_explorer_window()
-    if not win then
-        vim.notify("Side explorer: " .. (side_explorer_right and "right" or "left"))
-        return
+    tree_side_right = not tree_side_right
+    if tree_window() then
+        place_tree()
+    else
+        vim.notify("Side explorer: " .. (tree_side_right and "right" or "left"))
     end
-
-    local buffer = vim.api.nvim_win_get_buf(win)
-    local path = vim.b[buffer].netrw_curdir
-    local width = vim.api.nvim_win_get_width(win)
-    vim.api.nvim_win_close(win, true)
-    open_side_explorer(path, width)
 end
 
 local function resize_side_explorer(delta)
-    local win = side_explorer_window()
-    if not win then
-        return
+    local win = tree_window()
+    if win then
+        local current = vim.api.nvim_win_get_width(win)
+        local maximum = math.max(16, vim.o.columns - 24)
+        tree_api().tree.resize({ absolute = math.max(16, math.min(maximum, current + delta)) })
     end
-
-    local minimum = 16
-    local maximum = math.max(minimum, vim.o.columns - 24)
-    local width = math.max(minimum, math.min(maximum, vim.api.nvim_win_get_width(win) + delta))
-    vim.api.nvim_win_set_width(win, width)
-    side_explorer_width = width
 end
-
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "netrw",
-    callback = function(event)
-        map("n", "h", "-", { buffer = event.buf, remap = true, desc = "Go to parent directory" })
-        map("n", "l", "<CR>", { buffer = event.buf, remap = true, desc = "Open file or directory" })
-        vim.wo.conceallevel = 2
-        vim.wo.concealcursor = "nvic"
-        vim.fn.matchadd("Conceal", [[\V│]], 20)
-        vim.schedule(function()
-            decorate_side_explorer(event.buf)
-        end)
-    end,
-    desc = "Keep netrw navigation consistent with MiniFiles",
-})
-
-vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
-    pattern = "*",
-    callback = function(event)
-        if vim.bo[event.buf].filetype == "netrw" then
-            vim.schedule(function()
-                decorate_side_explorer(event.buf)
-            end)
-        end
-    end,
-    desc = "Refresh side explorer icons",
-})
 
 local function session_name()
     return sessions.name()

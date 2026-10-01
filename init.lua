@@ -6,6 +6,10 @@ end
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
+-- nvim-tree replaces netrw as the directory browser.
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Restore and persist only the themes this config intentionally supports.
 local theme_file = vim.fn.stdpath("state") .. "/theme"
 local read_ok, saved_theme_lines = pcall(vim.fn.readfile, theme_file)

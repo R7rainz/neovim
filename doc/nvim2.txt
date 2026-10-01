@@ -48,6 +48,7 @@ FILES AND SEARCH
     <Space>E       Toggle the persistent nvim-tree side explorer
     <Space>uE      Move the side explorer left/right
     <C-S-Left/Right> Shrink/grow the side explorer
+    <Space>w[/]     Reliable side-explorer shrink/grow fallback
     Enter          Open a file and close the explorer
     l              Enter a directory
     h/H            Go back within the project; no-op at the project root

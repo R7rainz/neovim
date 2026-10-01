@@ -85,7 +85,8 @@ reference; press `<Space>` and wait for the which-key popup for a quick menu.
 
 Inside MiniFiles, `Enter` opens a file and closes the explorer, `l` enters a
 directory, and `h`/`H` move upward without leaving the project root. `<Space>E`
-opens nvim-tree as a persistent full-height side panel; press `<Space>uE` to
+opens nvim-tree as a persistent full-height side panel (25% of the editor width);
+press `<Space>uE` to
 move that panel between the left and right sides. Use `h`/`l` to navigate,
 `<C-S-Left>`/`<C-S-Right>` to resize it. If your terminal does not pass those
 modified arrows through, use `<Space>w[` / `<Space>w]`; `g?` inside the tree
@@ -95,8 +96,8 @@ When the current line is wider than the window, the statusline shows a compact
 horizontal scrollbar with the current viewport position. Hold Shift while
 using the mouse wheel to scroll it left or right.
 
-Launching `nvim .` restores that project's saved buffers and layout, then saves
-them again on exit.
+Launching `nvim .` restores that project's saved buffers and layout, including
+whether the side explorer was open, then saves them again on exit.
 
 ## Plugin management
 

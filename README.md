@@ -71,6 +71,7 @@ reference; press `<Space>` and wait for the which-key popup for a quick menu.
 | `<Space>w[` / `<Space>w]` | Reliable side-explorer shrink/grow fallback |
 | `<Space>ff` | Find files |
 | `<Space>fw` | Live grep |
+| `<Space>mp` / `<Space>mt` | Markdown side preview / toggle rendering |
 | `<Space>fP` | Search project directories |
 | `<C-h/j/k/l>` | Move between panes |
 | `<Space>w/` / `<Space>w-` | Vertical / horizontal split |

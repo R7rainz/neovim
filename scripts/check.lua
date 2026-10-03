@@ -4,11 +4,13 @@ assert(vim.tbl_contains({ "edge", "omarchy", "tokyonight-night" }, vim.g.colors_
 assert(vim.fn.exists(":Theme") == 2, ":Theme command is missing")
 assert(vim.fn.exists(":ConfigDocs") == 2, ":ConfigDocs command is missing")
 assert(vim.fn.exists(":NvimTreeToggle") == 2, "nvim-tree command is missing")
+assert(vim.fn.exists(":RenderMarkdown") == 2, "render-markdown command is missing")
 local tree_config = require("nvim-tree.config").g
 assert(tree_config.view.width == "25%", "nvim-tree width is not 25%")
 assert(not tree_config.hijack_directories.auto_open, "nvim-tree auto-open must stay off for sessions")
 assert(vim.fn.maparg("<leader>ff", "n") ~= "", "file picker mapping is missing")
 assert(vim.fn.maparg("<leader>fw", "n") ~= "", "live grep mapping is missing")
+assert(vim.fn.maparg("<leader>mp", "n") ~= "", "markdown preview mapping is missing")
 assert(vim.fn.maparg("<leader>E", "n") ~= "", "side explorer mapping is missing")
 assert(vim.fn.maparg("<leader>uE", "n") ~= "", "side explorer position mapping is missing")
 assert(vim.fn.maparg("<C-S-Left>", "n") ~= "", "side explorer shrink mapping is missing")
@@ -18,7 +20,7 @@ assert(vim.fn.maparg("<leader>w]", "n") ~= "", "side explorer grow fallback is m
 assert(vim.fn.maparg("<C-h>", "n") ~= "", "pane navigation mapping is missing")
 assert(vim.fn.maparg("<leader>zh", "n") ~= "", "horizontal scrolling mapping is missing")
 assert(vim.fn.maparg("<S-ScrollWheelUp>", "n") ~= "", "mouse horizontal scrolling mapping is missing")
-assert(#vim.pack.get(nil, { info = false }) == 10, "unexpected plugin count")
+assert(#vim.pack.get(nil, { info = false }) == 11, "unexpected plugin count")
 
 print("nvim2: all checks passed")
 vim.cmd.qall()

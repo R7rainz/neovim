@@ -57,6 +57,7 @@ FILES AND SEARCH
     <Space>fP      Search project directories under your home directory
     <Space>fg      Live grep
     <Space>fw      Live grep (alternate mnemonic)
+    <Space>mp/mt   Markdown side preview / toggle rendering
     <Space>fb      Open buffers
     <Space>fh      Search help tags
     <Space>fr      Recent files
@@ -221,6 +222,7 @@ CURRENT PLUGINS
 
     mini.nvim          dashboard, picker, explorer, UI, pairs, diff, sessions
     nvim-tree.lua      persistent side file explorer with icons and diagnostics
+    render-markdown.nvim in-editor Markdown rendering and side preview
     nvim-lspconfig     maintained presets for Neovim's native LSP client
     nvim-treesitter    parser and query installation
     conform.nvim       formatter orchestration

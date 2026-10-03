@@ -50,6 +50,7 @@ end
 vim.pack.add({
     { src = github("nvim-mini/mini.nvim") },
     { src = github("nvim-tree/nvim-tree.lua") },
+    { src = github("MeanderingProgrammer/render-markdown.nvim") },
     { src = github("neovim/nvim-lspconfig") },
     { src = github("nvim-treesitter/nvim-treesitter"), version = "main" },
     { src = github("stevearc/conform.nvim") },
@@ -63,6 +64,12 @@ vim.pack.add({
 local icons = require("mini.icons")
 icons.setup()
 icons.mock_nvim_web_devicons()
+
+require("render-markdown").setup({
+    enabled = true,
+    render_modes = { "n", "c", "t" },
+    completions = { lsp = { enabled = true } },
+})
 
 local tree_api = require("nvim-tree.api")
 require("nvim-tree").setup({
@@ -389,6 +396,7 @@ require("which-key").add({
     { "<leader>d", group = "Diagnostics / Discord" },
     { "<leader>f", group = "Find" },
     { "<leader>h", group = "Help" },
+    { "<leader>m", group = "Markdown" },
     { "<leader>p", group = "Packages" },
     { "<leader>q", group = "Quit" },
     { "<leader>s", group = "Sessions" },

@@ -16,6 +16,8 @@ There is no `lazy.nvim`, Packer, or Mason.
 - Safe completion: the first LSP result is highlighted, not inserted; Enter
   accepts it and Space keeps your own text.
 - Treesitter highlighting, folding, indentation, diagnostics, and inlay hints.
+- Long lines soft-wrap on screen; save-time formatters target a 100-column width
+  where the language formatter supports line wrapping.
 - Prettier, StyLua, clang-format, gofmt, pgFormatter, format-on-save, and ESLint
   plus PostgreSQL diagnostics/completion through the Postgres Language Server.
 - MiniFiles project-root explorer, MiniPick search/live grep, Flash jumps,

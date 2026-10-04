@@ -30,7 +30,7 @@ opt.splitbelow = true
 opt.splitright = true
 opt.scrolloff = 8
 opt.sidescrolloff = 8
-opt.wrap = false
+opt.wrap = true
 opt.linebreak = true
 opt.list = true
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }

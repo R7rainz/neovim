@@ -439,9 +439,44 @@ require("conform").setup({
     },
     formatters = {
         clang_format = {
-            prepend_args = { "--style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never}" },
+            stdin = false,
+            args = {
+                "-i",
+                "--style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never, ColumnLimit: 100}",
+                "$FILENAME",
+            },
         },
-        prettier = { prepend_args = { "--tab-width", "4", "--use-tabs", "false" } },
+        gofmt = { stdin = false, args = { "-w", "$FILENAME" } },
+        pg_format = { stdin = false, args = { "--wrap-limit", "100", "--inplace", "$FILENAME" } },
+        prettier = {
+            stdin = false,
+            args = {
+                "--write",
+                "--tab-width",
+                "4",
+                "--use-tabs",
+                "false",
+                "--print-width",
+                "100",
+                "--prose-wrap",
+                "always",
+                "$FILENAME",
+            },
+        },
+        stylua = {
+            stdin = false,
+            args = {
+                "--search-parent-directories",
+                "--respect-ignores",
+                "--column-width",
+                "100",
+                "--indent-type",
+                "Spaces",
+                "--indent-width",
+                "4",
+                "$FILENAME",
+            },
+        },
     },
 })
 

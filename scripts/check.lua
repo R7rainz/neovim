@@ -1,5 +1,6 @@
 assert(vim.fn.has("nvim-0.12") == 1, "Neovim 0.12+ is required")
 assert(vim.o.tabstop == 4 and vim.o.shiftwidth == 4, "four-space indentation is not active")
+assert(vim.o.wrap, "long-line soft wrapping is not active")
 assert(vim.tbl_contains({ "edge", "omarchy", "tokyonight-night" }, vim.g.colors_name), "configured colorscheme did not load")
 assert(vim.fn.exists(":Theme") == 2, ":Theme command is missing")
 assert(vim.fn.exists(":ConfigDocs") == 2, ":ConfigDocs command is missing")

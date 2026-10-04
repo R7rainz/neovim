@@ -297,9 +297,11 @@ matching source file and use `:LspInfo` to verify attachment.
 
 FORMATTING
 
-Formatting runs on save. Web files use Prettier with a forced four-space tab
-width; C/C++ use clang-format with four spaces; Lua uses StyLua; Go uses gofmt
-(standard Go tabs displayed at width four); SQL uses PostgreSQL's `pg_format`.
+Formatting runs on save. Long lines also soft-wrap in the editor. Web files use
+Prettier with a forced four-space tab width and 100-column print width; C/C++
+use clang-format with four spaces and a 100-column limit; Lua uses StyLua with
+the same target; Go uses gofmt (standard Go tabs displayed at width four); SQL
+uses PostgreSQL's `pg_format` with a 100-column wrap limit.
 If an external formatter is absent, Conform falls back to an attached LSP
 formatter.
 

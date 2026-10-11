@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "base46": {
+      "rev": "83522e02c6c3b4ea901c4bffd9e0a5e0371c1fe6",
+      "src": "https://github.com/AvengeMedia/base46"
+    },
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"

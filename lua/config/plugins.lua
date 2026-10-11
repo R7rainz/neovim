@@ -58,6 +58,7 @@ vim.pack.add({
     { src = github("folke/flash.nvim") },
     { src = github("sainnhe/edge") },
     { src = github("folke/tokyonight.nvim") },
+    { src = github("AvengeMedia/base46") },
     { src = github("andweeb/presence.nvim"), version = "main" },
 }, { confirm = false, load = true })
 
@@ -491,6 +492,8 @@ require("tokyonight").setup({
     transparent = true,
     styles = { comments = { italic = true }, keywords = { italic = true } },
 })
+
+require("base46").setup({ transparency = true })
 
 local transparent_groups = {
     "Normal",

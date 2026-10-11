@@ -8,8 +8,8 @@ There is no `lazy.nvim`, Packer, or Mason.
 
 ## Features
 
-- Tokyo Night (default), Edge, and Omarchy colorschemes; no light themes or
-  theme bundle.
+- Tokyo Night (default), Edge, GruvChad dark-hard, and Omarchy colorschemes;
+  no light themes are exposed.
 - The selected dark theme persists across restarts.
 - Native LSP for Lua, TypeScript/JavaScript, React/Next.js, HTML/CSS/JSON, Go,
   C, C++, and PostgreSQL SQL files.

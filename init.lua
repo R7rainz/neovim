@@ -18,6 +18,7 @@ local supported_themes = {
     edge = true,
     omarchy = true,
     ["base46-gruvchad"] = true,
+    ["cursor-dark"] = true,
     ["tokyonight-night"] = true,
 }
 if not supported_themes[saved_theme] then

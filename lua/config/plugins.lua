@@ -59,6 +59,7 @@ vim.pack.add({
     { src = github("sainnhe/edge") },
     { src = github("folke/tokyonight.nvim") },
     { src = github("AvengeMedia/base46") },
+    { src = github("ydkulks/cursor-dark.nvim") },
     { src = github("andweeb/presence.nvim"), version = "main" },
 }, { confirm = false, load = true })
 
@@ -494,6 +495,7 @@ require("tokyonight").setup({
 })
 
 require("base46").setup({ transparency = true })
+require("cursor-dark").setup({ style = "dark", transparent = true })
 
 local transparent_groups = {
     "Normal",

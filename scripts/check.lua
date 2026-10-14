@@ -2,7 +2,10 @@ assert(vim.fn.has("nvim-0.12") == 1, "Neovim 0.12+ is required")
 assert(vim.o.tabstop == 4 and vim.o.shiftwidth == 4, "four-space indentation is not active")
 assert(vim.o.wrap, "long-line soft wrapping is not active")
 assert(
-    vim.tbl_contains({ "base46-gruvchad", "edge", "omarchy", "tokyonight-night" }, vim.g.colors_name),
+    vim.tbl_contains(
+        { "base46-gruvchad", "cursor-dark", "edge", "omarchy", "tokyonight-night" },
+        vim.g.colors_name
+    ),
     "configured colorscheme did not load"
 )
 assert(vim.fn.exists(":Theme") == 2, ":Theme command is missing")
@@ -24,7 +27,7 @@ assert(vim.fn.maparg("<leader>w]", "n") ~= "", "side explorer grow fallback is m
 assert(vim.fn.maparg("<C-h>", "n") ~= "", "pane navigation mapping is missing")
 assert(vim.fn.maparg("<leader>zh", "n") ~= "", "horizontal scrolling mapping is missing")
 assert(vim.fn.maparg("<S-ScrollWheelUp>", "n") ~= "", "mouse horizontal scrolling mapping is missing")
-assert(#vim.pack.get(nil, { info = false }) == 12, "unexpected plugin count")
+assert(#vim.pack.get(nil, { info = false }) == 13, "unexpected plugin count")
 
 print("nvim2: all checks passed")
 vim.cmd.qall()

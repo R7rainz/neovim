@@ -8,6 +8,10 @@
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "cursor-dark.nvim": {
+      "rev": "58820a92c44a842a43bad0acc09542b8a8982470",
+      "src": "https://github.com/ydkulks/cursor-dark.nvim"
+    },
     "edge": {
       "rev": "7ec78c21bd8f0b2b0b47043bb1e730c561647c72",
       "src": "https://github.com/sainnhe/edge"

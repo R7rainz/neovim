@@ -228,6 +228,7 @@ end
 -- Dark-theme chooser and user commands.
 local function pick_theme()
     local themes = {
+        { label = "Cursor Dark", name = "cursor-dark" },
         { label = "Edge (dark)", name = "edge" },
         { label = "GruvChad (dark hard)", name = "base46-gruvchad" },
         { label = "Omarchy (active desktop palette)", name = "omarchy" },

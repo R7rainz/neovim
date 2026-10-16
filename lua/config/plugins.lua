@@ -195,7 +195,13 @@ vim.api.nvim_create_autocmd("User", {
     desc = "Keep MiniFiles inside project root",
 })
 require("mini.pairs").setup()
-require("mini.diff").setup({ view = { style = "sign" } })
+require("mini.diff").setup({
+    view = {
+        priority = 199,
+        signs = { add = "▎", change = "▎", delete = "▁" },
+        style = "sign",
+    },
+})
 require("mini.indentscope").setup({ draw = { animation = require("mini.indentscope").gen_animation.none() } })
 require("config.sessions").setup()
 
@@ -259,6 +265,9 @@ local function setup_ui_highlights()
     set(0, "MiniTablineTabpagesection", { bg = palette.blue, bold = true, fg = palette.base })
     set(0, "MiniTablineTrunc", { bg = palette.base, bold = true, fg = palette.yellow })
     set(0, "DiagnosticLineError", { bg = palette.block })
+    set(0, "MiniDiffSignAdd", { bold = true, fg = palette.green })
+    set(0, "MiniDiffSignChange", { bold = true, fg = palette.yellow })
+    set(0, "MiniDiffSignDelete", { bold = true, fg = palette.red })
 
     -- Telescope-like picker hierarchy: quiet transparent body, bright prompt,
     -- and one clear current-match block.

@@ -28,6 +28,12 @@ assert(vim.fn.maparg("<C-h>", "n") ~= "", "pane navigation mapping is missing")
 assert(vim.fn.maparg("<leader>zh", "n") ~= "", "horizontal scrolling mapping is missing")
 assert(vim.fn.maparg("<S-ScrollWheelUp>", "n") ~= "", "mouse horizontal scrolling mapping is missing")
 assert(#vim.pack.get(nil, { info = false }) == 13, "unexpected plugin count")
+local diff_config = require("mini.diff").config
+assert(diff_config.view.style == "sign", "mini.diff sign view is not active")
+assert(
+    diff_config.view.signs.add == "▎" and diff_config.view.signs.delete == "▁",
+    "mini.diff signs are not visible"
+)
 
 print("nvim2: all checks passed")
 vim.cmd.qall()

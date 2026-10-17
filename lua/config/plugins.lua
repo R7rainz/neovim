@@ -570,10 +570,16 @@ vim.api.nvim_create_autocmd("FileType", {
         "vimdoc",
     },
     callback = function(event)
-        if pcall(vim.treesitter.start, event.buf) then
+        local treesitter_ok = pcall(vim.treesitter.start, event.buf)
+        if treesitter_ok then
             vim.wo.foldmethod = "expr"
             vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
             vim.wo.foldlevel = 99
+        end
+        if vim.tbl_contains({ "typescript", "typescriptreact" }, vim.bo[event.buf].filetype) then
+            vim.bo[event.buf].cindent = true
+            vim.bo[event.buf].indentexpr = ""
+        elseif treesitter_ok then
             vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end
     end,

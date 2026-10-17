@@ -34,6 +34,17 @@ assert(
     diff_config.view.signs.add == "▎" and diff_config.view.signs.delete == "▁",
     "mini.diff signs are not visible"
 )
+local ts_buf = vim.api.nvim_create_buf(false, true)
+vim.bo[ts_buf].filetype = "typescript"
+vim.api.nvim_buf_call(ts_buf, function()
+    vim.cmd("doautocmd FileType typescript")
+end)
+assert(vim.bo[ts_buf].shiftwidth == 4, "TypeScript shiftwidth is not four")
+assert(
+    vim.bo[ts_buf].cindent and vim.bo[ts_buf].indentexpr == "",
+    "TypeScript does not use four-space auto-indent"
+)
+vim.api.nvim_buf_delete(ts_buf, { force = true })
 
 print("nvim2: all checks passed")
 vim.cmd.qall()

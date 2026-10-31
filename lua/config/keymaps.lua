@@ -231,7 +231,6 @@ local function pick_theme()
         { label = "Cursor Dark", name = "cursor-dark" },
         { label = "Edge (dark)", name = "edge" },
         { label = "GruvChad (dark hard)", name = "base46-gruvchad" },
-        { label = "Omarchy (active desktop palette)", name = "omarchy" },
         { label = "Tokyo Night (dark)", name = "tokyonight-night" },
     }
     vim.ui.select(themes, {

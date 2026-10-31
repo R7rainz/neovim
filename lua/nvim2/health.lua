@@ -28,13 +28,6 @@ function M.check()
 
     vim.health.ok(string.format("%d plugins managed by vim.pack", #vim.pack.get(nil, { info = false })))
 
-    local palette = vim.fn.expand("~/.local/state/omarchy/current/theme/colors.toml")
-    if vim.uv.fs_stat(palette) then
-        vim.health.ok("Omarchy palette found")
-    else
-        vim.health.warn("Omarchy palette not found; :colorscheme omarchy will use its built-in fallback")
-    end
-
     for _, entry in ipairs(executables) do
         if vim.fn.executable(entry[1]) == 1 then
             vim.health.ok(entry[1] .. " (" .. entry[2] .. ")")

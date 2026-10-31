@@ -8,7 +8,7 @@ There is no `lazy.nvim`, Packer, or Mason.
 
 ## Features
 
-- Tokyo Night (default), Cursor Dark, Edge, GruvChad dark-hard, and Omarchy
+- Tokyo Night (default), Cursor Dark, Edge, and GruvChad dark-hard
   colorschemes; no light themes are exposed.
 - The selected dark theme persists across restarts.
 - Native LSP for Lua, TypeScript/JavaScript, React/Next.js, HTML/CSS/JSON, Go,
@@ -127,7 +127,6 @@ the existing setup calls, then restart Neovim. Do not edit the lockfile by hand.
 | `lua/config/keymaps.lua` | Keybindings and user commands |
 | `lua/config/sessions.lua` | Project session naming and restore/save |
 | `lua/config/ui.lua` | Dashboard |
-| `colors/omarchy.lua` | Omarchy palette and highlights |
 
 For the complete operational reference, run:
 

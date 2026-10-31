@@ -16,7 +16,6 @@ local read_ok, saved_theme_lines = pcall(vim.fn.readfile, theme_file)
 local saved_theme = read_ok and saved_theme_lines[1] or nil
 local supported_themes = {
     edge = true,
-    omarchy = true,
     ["base46-gruvchad"] = true,
     ["cursor-dark"] = true,
     ["tokyonight-night"] = true,

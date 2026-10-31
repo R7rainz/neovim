@@ -636,6 +636,9 @@ end
 -- Apply the configured startup theme last so all UI modules see its colors.
 local ok = pcall(vim.cmd.colorscheme, vim.g.nvim2_theme)
 if not ok then
-    vim.notify("Unknown theme '" .. vim.g.nvim2_theme .. "'; using omarchy", vim.log.levels.WARN)
-    vim.cmd.colorscheme("omarchy")
+    vim.notify(
+        "Unknown theme '" .. vim.g.nvim2_theme .. "'; using tokyonight-night",
+        vim.log.levels.WARN
+    )
+    vim.cmd.colorscheme("tokyonight-night")
 end

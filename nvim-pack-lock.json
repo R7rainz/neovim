@@ -8,10 +8,6 @@
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
-    "cursor-dark.nvim": {
-      "rev": "58820a92c44a842a43bad0acc09542b8a8982470",
-      "src": "https://github.com/ydkulks/cursor-dark.nvim"
-    },
     "edge": {
       "rev": "7ec78c21bd8f0b2b0b47043bb1e730c561647c72",
       "src": "https://github.com/sainnhe/edge"
@@ -45,6 +41,10 @@
     "render-markdown.nvim": {
       "rev": "640a3ec6d538bad17c328be373c7cad0293d9589",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+    },
+    "solarized-osaka.nvim": {
+      "rev": "a21176efde15fab21fabda0bf2ba123ed6d7332d",
+      "src": "https://github.com/craftzdog/solarized-osaka.nvim"
     },
     "tokyonight.nvim": {
       "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",

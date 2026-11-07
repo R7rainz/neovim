@@ -228,7 +228,7 @@ end
 -- Dark-theme chooser and user commands.
 local function pick_theme()
     local themes = {
-        { label = "Cursor Dark", name = "cursor-dark" },
+        { label = "Solarized Osaka", name = "solarized-osaka" },
         { label = "Edge (dark)", name = "edge" },
         { label = "GruvChad (dark hard)", name = "base46-gruvchad" },
         { label = "Tokyo Night (dark)", name = "tokyonight-night" },

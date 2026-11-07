@@ -58,8 +58,8 @@ vim.pack.add({
     { src = github("folke/flash.nvim") },
     { src = github("sainnhe/edge") },
     { src = github("folke/tokyonight.nvim") },
+    { src = github("craftzdog/solarized-osaka.nvim") },
     { src = github("AvengeMedia/base46") },
-    { src = github("ydkulks/cursor-dark.nvim") },
     { src = github("andweeb/presence.nvim"), version = "main" },
 }, { confirm = false, load = true })
 
@@ -132,9 +132,24 @@ require("nvim-tree").setup({
     on_attach = function(bufnr)
         tree_api.map.on_attach.default(bufnr)
         local opts = { buffer = bufnr, noremap = true, silent = true, nowait = true }
-        vim.keymap.set("n", "h", tree_api.node.navigate.parent_close, vim.tbl_extend("force", opts, { desc = "Go to parent" }))
-        vim.keymap.set("n", "l", tree_api.node.open.edit, vim.tbl_extend("force", opts, { desc = "Open" }))
-        vim.keymap.set("n", "<CR>", tree_api.node.open.edit, vim.tbl_extend("force", opts, { desc = "Open" }))
+        vim.keymap.set(
+            "n",
+            "h",
+            tree_api.node.navigate.parent_close,
+            vim.tbl_extend("force", opts, { desc = "Go to parent" })
+        )
+        vim.keymap.set(
+            "n",
+            "l",
+            tree_api.node.open.edit,
+            vim.tbl_extend("force", opts, { desc = "Open" })
+        )
+        vim.keymap.set(
+            "n",
+            "<CR>",
+            tree_api.node.open.edit,
+            vim.tbl_extend("force", opts, { desc = "Open" })
+        )
         for _, lhs in ipairs({ "-", "P", "<C-]>" }) do
             pcall(vim.keymap.del, "n", lhs, { buffer = bufnr })
         end
@@ -202,13 +217,12 @@ require("mini.diff").setup({
         style = "sign",
     },
 })
-require("mini.indentscope").setup({ draw = { animation = require("mini.indentscope").gen_animation.none() } })
+require("mini.indentscope").setup({
+    draw = { animation = require("mini.indentscope").gen_animation.none() },
+})
 require("config.sessions").setup()
 
 -- Statusline and tabline highlights.
--- Keep the editor chrome in the same visual language as the Omarchy tmux and
--- Starship setup: one clear mode pill, quiet context text, and no noisy empty
--- separators or oversized blocks.
 local function setup_ui_highlights()
     local function color(group, field, fallback)
         local ok, value = pcall(function()
@@ -253,8 +267,6 @@ local function setup_ui_highlights()
         set(0, "Nvim2StatusMode" .. name, { bg = background, bold = true, fg = palette.base })
     end
 
-    -- mini.tabline supplies the buffer-state groups; only their colors are
-    -- changed here, so buffer switching and click actions stay native.
     set(0, "MiniTablineCurrent", { bg = palette.yellow, bold = true, fg = palette.base })
     set(0, "MiniTablineVisible", { bg = palette.block, fg = palette.bright })
     set(0, "MiniTablineHidden", { bg = palette.base, fg = palette.muted })
@@ -269,8 +281,6 @@ local function setup_ui_highlights()
     set(0, "MiniDiffSignChange", { bold = true, fg = palette.yellow })
     set(0, "MiniDiffSignDelete", { bold = true, fg = palette.red })
 
-    -- Telescope-like picker hierarchy: quiet transparent body, bright prompt,
-    -- and one clear current-match block.
     set(0, "MiniPickNormal", { bg = "NONE", fg = palette.foreground })
     set(0, "MiniPickBorder", { bg = "NONE", fg = palette.block })
     set(0, "MiniPickBorderBusy", { bg = "NONE", fg = palette.yellow })
@@ -354,7 +364,9 @@ statusline.setup({
             local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
             local search = statusline.section_searchcount({ trunc_width = 90 })
             local directory = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-            local session = vim.v.this_session ~= "" and "󰗼 " .. vim.fn.fnamemodify(vim.v.this_session, ":t:r") or ""
+            local session = vim.v.this_session ~= ""
+                    and "󰗼 " .. vim.fn.fnamemodify(vim.v.this_session, ":t:r")
+                or ""
 
             local context = join({ "󰉋 " .. directory, git, diff, diagnostics, lsp }, "  │  ")
             local right = join({ session, fileinfo, search }, "  │  ")
@@ -503,8 +515,23 @@ require("tokyonight").setup({
     styles = { comments = { italic = true }, keywords = { italic = true } },
 })
 
+require("solarized-osaka").setup({
+    style = "vivid",
+    transparent = true,
+    terminal_colors = true,
+    styles = {
+        comments = { italic = true },
+        keywords = { italic = true },
+        functions = {},
+        variables = {},
+        sidebars = "transparent",
+        floats = "transparent",
+    },
+    hide_inactive_statusline = false,
+    dim_inactive = false,
+})
+
 require("base46").setup({ transparency = true })
-require("cursor-dark").setup({ style = "dark", transparent = true })
 
 local transparent_groups = {
     "Normal",
@@ -622,23 +649,31 @@ local function start_presence()
     presence:update()
 end
 
-vim.api.nvim_create_user_command("Presence", start_presence, { desc = "Enable or refresh Discord presence" })
+vim.api.nvim_create_user_command(
+    "Presence",
+    start_presence,
+    { desc = "Enable or refresh Discord presence" }
+)
 vim.api.nvim_create_user_command("PresenceCancel", function()
     if presence then
         presence:cancel()
     end
 end, { desc = "Disable Discord presence" })
 
-if vim.env.NVIM2_NO_PRESENCE ~= "1" and not vim.env.SSH_CONNECTION and #vim.api.nvim_list_uis() > 0 then
+if
+    vim.env.NVIM2_NO_PRESENCE ~= "1"
+    and not vim.env.SSH_CONNECTION
+    and #vim.api.nvim_list_uis() > 0
+then
     start_presence()
 end
 
 -- Apply the configured startup theme last so all UI modules see its colors.
-local ok = pcall(vim.cmd.colorscheme, vim.g.nvim2_theme)
+local ok = pcall(vim.cmd.colorscheme, vim.g.nvim2_theme or "solarized-osaka")
 if not ok then
     vim.notify(
-        "Unknown theme '" .. vim.g.nvim2_theme .. "'; using tokyonight-night",
+        "Unknown theme '" .. vim.g.nvim2_theme .. "'; using solarized-osaka",
         vim.log.levels.WARN
     )
-    vim.cmd.colorscheme("tokyonight-night")
+    vim.cmd.colorscheme("solarized-osaka")
 end

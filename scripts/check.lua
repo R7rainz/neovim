@@ -3,7 +3,7 @@ assert(vim.o.tabstop == 4 and vim.o.shiftwidth == 4, "four-space indentation is 
 assert(vim.o.wrap, "long-line soft wrapping is not active")
 assert(
     vim.tbl_contains(
-        { "base46-gruvchad", "cursor-dark", "edge", "tokyonight-night" },
+        { "base46-gruvchad", "edge", "solarized-osaka", "tokyonight-night" },
         vim.g.colors_name
     ),
     "configured colorscheme did not load"

@@ -17,7 +17,7 @@ local saved_theme = read_ok and saved_theme_lines[1] or nil
 local supported_themes = {
     edge = true,
     ["base46-gruvchad"] = true,
-    ["cursor-dark"] = true,
+    ["solarized-osaka"] = true,
     ["tokyonight-night"] = true,
 }
 if not supported_themes[saved_theme] then

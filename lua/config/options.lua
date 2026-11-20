@@ -32,8 +32,6 @@ opt.scrolloff = 8
 opt.sidescrolloff = 8
 opt.wrap = true
 opt.linebreak = true
-opt.list = true
-opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 opt.undofile = true
 opt.swapfile = false
@@ -84,6 +82,19 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.bo[event.buf].shiftwidth = 4
         vim.bo[event.buf].softtabstop = 4
         vim.bo[event.buf].expandtab = true
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    desc = "Don't continue comments on Enter or o/O",
+    callback = function(event)
+        -- Deferred: filetype plugins run after this autocmd and add "r"/"o" back.
+        vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(event.buf) then
+                vim.bo[event.buf].formatoptions = vim.bo[event.buf].formatoptions:gsub("[ro]", "")
+            end
+        end)
     end,
 })
 

@@ -13,8 +13,8 @@ There is no `lazy.nvim`, Packer, or Mason.
 - The selected dark theme persists across restarts.
 - Native LSP for Lua, TypeScript/JavaScript, React/Next.js, HTML/CSS/JSON, Go,
   C, C++, and PostgreSQL SQL files.
-- Safe completion: the first LSP result is highlighted, not inserted; Enter
-  accepts it and Space keeps your own text.
+- blink.cmp completion (from craftzdog's dotfiles): docs popup, snippets, auto
+  brackets; the first result is highlighted, not inserted, Enter accepts it.
 - Treesitter highlighting, folding, indentation, diagnostics, and inlay hints.
 - Long lines soft-wrap on screen; save-time formatters target a 100-column width
   where the language formatter supports line wrapping.
@@ -22,7 +22,7 @@ There is no `lazy.nvim`, Packer, or Mason.
   plus PostgreSQL diagnostics/completion through the Postgres Language Server.
 - MiniFiles project-root explorer, MiniPick search/live grep, Flash jumps,
   Japanese dashboard, Discord presence, and automatic project sessions.
-- Starship/tmux-inspired statusline and tabline.
+- lualine statusline (ported from craftzdog's dotfiles) and a mini.tabline buffer line.
 
 ## Requirements
 

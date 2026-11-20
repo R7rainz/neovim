@@ -228,6 +228,9 @@ end
 -- Dark-theme chooser and user commands.
 local function pick_theme()
     local themes = {
+        { label = "Gruvbox (dark hard)", name = "gruvbox" },
+        { label = "Kanagawa", name = "kanagawa" },
+        { label = "Rosé Pine", name = "rose-pine" },
         { label = "Solarized Osaka", name = "solarized-osaka" },
         { label = "Edge (dark)", name = "edge" },
         { label = "GruvChad (dark hard)", name = "base46-gruvchad" },

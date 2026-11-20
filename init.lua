@@ -17,6 +17,9 @@ local saved_theme = read_ok and saved_theme_lines[1] or nil
 local supported_themes = {
     edge = true,
     ["base46-gruvchad"] = true,
+    gruvbox = true,
+    kanagawa = true,
+    ["rose-pine"] = true,
     ["solarized-osaka"] = true,
     ["tokyonight-night"] = true,
 }

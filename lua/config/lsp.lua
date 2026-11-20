@@ -1,8 +1,5 @@
--- Shared LSP client capabilities.
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-vim.lsp.config("*", { capabilities = capabilities })
+-- Shared LSP client capabilities (blink.cmp adds completion/snippet support).
+vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
 
 -- Language-server-specific settings.
 vim.lsp.config("lua_ls", {
@@ -109,72 +106,20 @@ vim.diagnostic.config({
     virtual_text = { prefix = "●", source = "if_many", spacing = 2 },
 })
 
--- Buffer-local completion and navigation mappings.
+-- Buffer-local navigation mappings (completion itself is blink.cmp, see plugins.lua).
 vim.api.nvim_create_autocmd("LspAttach", {
-    desc = "Native LSP completion and buffer mappings",
+    desc = "LSP buffer mappings",
     callback = function(event)
-        local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
-        -- Trigger explicitly below so punctuation (notably `/` in comments)
-        -- can never cause an unrelated LSP item to be inserted or suggested.
-        vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = false })
-
-        if not vim.b[event.buf].nvim2_completion then
-            vim.b[event.buf].nvim2_completion = true
-            local function in_comment()
-                local ok, node = pcall(vim.treesitter.get_node, { bufnr = event.buf })
-                if not ok or not node then
-                    return false
-                end
-                while node do
-                    if node:type():find("comment", 1, true) then
-                        return true
-                    end
-                    node = node:parent()
-                end
-                return false
-            end
-
-            vim.api.nvim_create_autocmd("InsertCharPre", {
-                buffer = event.buf,
-                callback = function()
-                    local char = vim.v.char
-                    -- Only identifiers and member access start completion. A
-                    -- slash, quote, space, or other punctuation stays exactly
-                    -- what the user typed. Comments remain completion-free.
-                    if not in_comment() and (char:match("[%w_]") or char == ".") then
-                        vim.lsp.completion.get()
-                    end
-                end,
-            })
+        -- Let the TypeScript server fix each line's indentation as you type (Enter, `;`,
+        -- `}`), like VS Code, so typed code already sits where the formatter puts it.
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if client and client.name == "vtsls" then
+            vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
         end
 
         local function map(mode, lhs, rhs, desc)
             vim.keymap.set(mode, lhs, rhs, { buffer = event.buf, desc = desc, silent = true })
         end
-
-        local function keycode(key)
-            return vim.api.nvim_replace_termcodes(key, true, false, true)
-        end
-
-        -- `noinsert` highlights the best candidate without changing the
-        -- buffer. Enter commits it; Space cancels the menu and stays literal.
-        vim.keymap.set("i", "<CR>", function()
-            local info = vim.fn.complete_info({ "selected" })
-            if vim.fn.pumvisible() == 1 and info.selected >= 0 then
-                return keycode("<C-y>")
-            end
-            if MiniPairs and MiniPairs.cr then
-                return MiniPairs.cr()
-            end
-            return keycode("<CR>")
-        end, { buffer = event.buf, desc = "Accept selected completion", expr = true, silent = true })
-
-        vim.keymap.set("i", "<Space>", function()
-            if vim.fn.pumvisible() == 1 then
-                return keycode("<C-e>") .. " "
-            end
-            return " "
-        end, { buffer = event.buf, desc = "Keep typed space", expr = true, silent = true })
 
         map("n", "gd", vim.lsp.buf.definition, "Go to definition")
         map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
@@ -185,6 +130,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
         map("n", "<leader>D", vim.lsp.buf.type_definition, "Type definition")
         map("i", "<C-k>", vim.lsp.buf.signature_help, "Signature help")
-        map("i", "<C-Space>", vim.lsp.completion.get, "Trigger completion")
     end,
 })

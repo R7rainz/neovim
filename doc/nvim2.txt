@@ -286,13 +286,16 @@ handled by vtsls; no separate React or Next language server is required.
 
 COMPLETION
 
-The native completion menu uses `noinsert`, so the first LSP suggestion is only
-highlighted and never overwrites text while you type. Press Enter to accept it;
-Space dismisses the menu and inserts a literal space. Up/Down (or
-PageUp/PageDown) can choose another candidate when wanted. Automatic completion
-starts only for identifier characters and is suppressed inside comments;
-`<C-Space>` triggers it manually anywhere. `<C-y>` remains available as the
-native accept key.
+Completion is `blink.cmp`, set up as in craftzdog's dotfiles. The first
+suggestion is only highlighted and never overwrites text while you type. Press
+Enter to accept it; Space just types a space. Up/Down or <C-n>/<C-p> choose
+another candidate, and the documentation popup opens beside the menu. Function
+completions add their brackets. Completion is suppressed inside comments;
+`<C-Space>` opens it manually and `<C-e>` closes it. The `:` command line also
+completes.
+
+Auto-indentation uses Treesitter for every language, TypeScript and TSX
+included, so code you type lands where the formatter would put it.
 
 After installation, restart Neovim and run `:checkhealth vim.lsp`. Open a
 matching source file and use `:LspInfo` to verify attachment.
@@ -344,6 +347,9 @@ The configured dark colorschemes are:
     :colorscheme edge Edge dark palette
     :colorscheme base46-gruvchad GruvChad dark-hard palette
     :colorscheme cursor-dark Cursor Dark palette
+    :colorscheme gruvbox          Gruvbox dark, hard contrast
+    :colorscheme kanagawa         Kanagawa Dragon, transparent background
+    :colorscheme rose-pine        Rosé Pine (main) palette
     :colorscheme tokyonight-night Tokyo Night dark palette
     :Theme                        interactive chooser
 
@@ -358,11 +364,11 @@ italicized where the selected colorscheme supports it.
 
 STATUSLINE AND TABLINE
 
-The statusline and buffer tabline use `mini.statusline` and `mini.tabline` with
-compact powerline blocks inspired by the Omarchy tmux and Starship setup.
-Their colors follow the active colorscheme automatically; the current buffer,
-modified buffers, git branch, diagnostics, LSP state, and cursor location each
-have distinct, quiet segments.
+The statusline is `lualine.nvim` with the layout from craftzdog's dotfiles
+(lua/config/statusline.lua): mode, git branch, project root, file path,
+macro recording, diagnostics, mini.diff counts, the horizontal scrollbar,
+progress, and cursor location. It follows the active colorscheme. The buffer
+tabline uses `mini.tabline`.
 
 ==============================================================================
 7. CUSTOMIZATION                                            *nvim2-customize*

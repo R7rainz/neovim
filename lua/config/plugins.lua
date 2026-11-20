@@ -56,9 +56,14 @@ vim.pack.add({
     { src = github("stevearc/conform.nvim") },
     { src = github("folke/which-key.nvim") },
     { src = github("folke/flash.nvim") },
+    { src = github("nvim-lualine/lualine.nvim") },
+    { src = github("saghen/blink.cmp"), version = vim.version.range("^1") },
     { src = github("sainnhe/edge") },
     { src = github("folke/tokyonight.nvim") },
     { src = github("craftzdog/solarized-osaka.nvim") },
+    { src = github("rose-pine/neovim"), name = "rose-pine" },
+    { src = github("rebelot/kanagawa.nvim") },
+    { src = github("ellisonleao/gruvbox.nvim") },
     { src = github("AvengeMedia/base46") },
     { src = github("andweeb/presence.nvim"), version = "main" },
 }, { confirm = false, load = true })
@@ -210,6 +215,55 @@ vim.api.nvim_create_autocmd("User", {
     desc = "Keep MiniFiles inside project root",
 })
 require("mini.pairs").setup()
+
+-- Completion (blink.cmp, as in craftzdog's dotfiles). Enter accepts, the first item is
+-- highlighted but never inserted, Space just types a space, and comments stay quiet.
+local function in_comment()
+    local ok, node = pcall(vim.treesitter.get_node)
+    while ok and node do
+        if node:type():find("comment", 1, true) then
+            return true
+        end
+        node = node:parent()
+    end
+    return false
+end
+
+require("blink.cmp").setup({
+    enabled = function()
+        return vim.fn.mode() == "c" or not in_comment()
+    end,
+    keymap = { preset = "enter", ["<C-y>"] = { "select_and_accept" } },
+    completion = {
+        list = {
+            selection = {
+                -- Highlight the first item only while typing a word or right after `.`,
+                -- so a menu left open after `)` or `;` never swallows Enter.
+                preselect = function(ctx)
+                    local line, col = vim.api.nvim_get_current_line(), ctx.get_cursor()[2]
+                    return ctx.get_keyword() ~= "" or line:sub(col, col) == "."
+                end,
+                auto_insert = false,
+            },
+        },
+        accept = { auto_brackets = { enabled = true } },
+        menu = { draw = { treesitter = { "lsp" } } },
+        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+    },
+    cmdline = {
+        enabled = true,
+        keymap = { preset = "cmdline", ["<Right>"] = false, ["<Left>"] = false },
+        completion = {
+            list = { selection = { preselect = false } },
+            menu = {
+                auto_show = function()
+                    return vim.fn.getcmdtype() == ":"
+                end,
+            },
+            ghost_text = { enabled = true },
+        },
+    },
+})
 require("mini.diff").setup({
     view = {
         priority = 199,
@@ -217,9 +271,9 @@ require("mini.diff").setup({
         style = "sign",
     },
 })
-require("mini.indentscope").setup({
-    draw = { animation = require("mini.indentscope").gen_animation.none() },
-})
+-- Colour codes like #7aa2f7 are drawn on their own colour.
+local hipatterns = require("mini.hipatterns")
+hipatterns.setup({ highlighters = { hex_color = hipatterns.gen_highlighter.hex_color() } })
 require("config.sessions").setup()
 
 -- Statusline and tabline highlights.
@@ -238,44 +292,24 @@ local function setup_ui_highlights()
         muted = color("Comment", "fg", "#73777d"),
         block = color("WinSeparator", "fg", "#282a30"),
         blue = color("Directory", "fg", "#7e91aa"),
-        cyan = color("Type", "fg", "#8ea2ad"),
         green = color("String", "fg", "#88998c"),
-        magenta = color("Constant", "fg", "#ceb0b4"),
         red = color("DiagnosticError", "fg", "#ec8a73"),
         yellow = color("WarningMsg", "fg", "#e5b681"),
     }
 
     local set = vim.api.nvim_set_hl
-    set(0, "StatusLine", { bg = palette.base, fg = palette.foreground })
-    set(0, "StatusLineNC", { bg = palette.base, fg = palette.muted })
-    set(0, "Nvim2StatusContext", { bg = palette.base, fg = palette.muted })
-    set(0, "Nvim2StatusInfo", { bg = palette.base, fg = palette.blue })
-    set(0, "Nvim2StatusFile", { bg = palette.base, fg = palette.bright })
-    set(0, "Nvim2StatusLocation", { bg = palette.blue, bold = true, fg = palette.base })
-    set(0, "Nvim2StatusScrollTrack", { bg = palette.base, fg = palette.block })
-    set(0, "Nvim2StatusScrollThumb", { bg = palette.blue, fg = palette.base })
-
-    local modes = {
-        Normal = palette.yellow,
-        Insert = palette.green,
-        Visual = palette.magenta,
-        Replace = palette.red,
-        Command = palette.blue,
-        Other = palette.cyan,
-    }
-    for name, background in pairs(modes) do
-        set(0, "Nvim2StatusMode" .. name, { bg = background, bold = true, fg = palette.base })
-    end
+    set(0, "StatusLine", { bg = "NONE", fg = palette.foreground })
+    set(0, "StatusLineNC", { bg = "NONE", fg = palette.muted })
 
     set(0, "MiniTablineCurrent", { bg = palette.yellow, bold = true, fg = palette.base })
     set(0, "MiniTablineVisible", { bg = palette.block, fg = palette.bright })
-    set(0, "MiniTablineHidden", { bg = palette.base, fg = palette.muted })
+    set(0, "MiniTablineHidden", { bg = "NONE", fg = palette.muted })
     set(0, "MiniTablineModifiedCurrent", { bg = palette.green, bold = true, fg = palette.base })
-    set(0, "MiniTablineModifiedVisible", { bg = palette.base, bold = true, fg = palette.green })
-    set(0, "MiniTablineModifiedHidden", { bg = palette.base, fg = palette.yellow })
-    set(0, "MiniTablineFill", { bg = palette.base, fg = palette.muted })
+    set(0, "MiniTablineModifiedVisible", { bg = "NONE", bold = true, fg = palette.green })
+    set(0, "MiniTablineModifiedHidden", { bg = "NONE", fg = palette.yellow })
+    set(0, "MiniTablineFill", { bg = "NONE", fg = palette.muted })
     set(0, "MiniTablineTabpagesection", { bg = palette.blue, bold = true, fg = palette.base })
-    set(0, "MiniTablineTrunc", { bg = palette.base, bold = true, fg = palette.yellow })
+    set(0, "MiniTablineTrunc", { bg = "NONE", bold = true, fg = palette.yellow })
     set(0, "DiagnosticLineError", { bg = palette.block })
     set(0, "MiniDiffSignAdd", { bold = true, fg = palette.green })
     set(0, "MiniDiffSignChange", { bold = true, fg = palette.yellow })
@@ -298,106 +332,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = setup_ui_highlights,
 })
 
-local function horizontal_scrollbar()
-    if vim.wo.wrap then
-        return ""
-    end
-
-    local width = vim.api.nvim_win_get_width(0)
-    local line_width = vim.fn.strdisplaywidth(vim.fn.getline("."))
-    if line_width <= width then
-        return ""
-    end
-
-    local track = math.min(20, math.max(10, math.floor(width / 5)))
-    local thumb = math.min(track, math.max(2, math.floor(track * width / line_width)))
-    local max_left = math.max(1, line_width - width)
-    local left = math.min(vim.fn.winsaveview().leftcol, max_left)
-    local start = math.floor((left / max_left) * (track - thumb))
-
-    return "↔ %#Nvim2StatusScrollTrack#"
-        .. string.rep("─", start)
-        .. "%#Nvim2StatusScrollThumb#"
-        .. string.rep("━", thumb)
-        .. "%#Nvim2StatusScrollTrack#"
-        .. string.rep("─", track - start - thumb)
-        .. "%*"
-end
-
-vim.api.nvim_create_autocmd({ "CursorMoved", "WinScrolled" }, {
-    desc = "Refresh the horizontal scrollbar",
-    callback = function()
-        vim.cmd.redrawstatus()
-    end,
-})
-
--- Statusline and buffer tabline content.
-local statusline = require("mini.statusline")
-statusline.setup({
-    use_icons = true,
-    content = {
-        active = function()
-            local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
-            local mode_names = {
-                MiniStatuslineModeNormal = "Nvim2StatusModeNormal",
-                MiniStatuslineModeInsert = "Nvim2StatusModeInsert",
-                MiniStatuslineModeVisual = "Nvim2StatusModeVisual",
-                MiniStatuslineModeReplace = "Nvim2StatusModeReplace",
-                MiniStatuslineModeCommand = "Nvim2StatusModeCommand",
-                MiniStatuslineModeOther = "Nvim2StatusModeOther",
-            }
-            local mode_group = mode_names[mode_hl] or "Nvim2StatusModeNormal"
-            local function join(parts, separator)
-                return table.concat(
-                    vim.tbl_filter(function(value)
-                        return value ~= nil and value ~= ""
-                    end, parts),
-                    separator
-                )
-            end
-
-            local git = statusline.section_git({ trunc_width = 45, icon = "" })
-            local diff = statusline.section_diff({ trunc_width = 95 })
-            local diagnostics = statusline.section_diagnostics({ trunc_width = 95 })
-            local lsp = statusline.section_lsp({ trunc_width = 95, icon = "󰒋" })
-            local filename = statusline.section_filename({ trunc_width = 150 })
-            local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
-            local search = statusline.section_searchcount({ trunc_width = 90 })
-            local directory = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-            local session = vim.v.this_session ~= ""
-                    and "󰗼 " .. vim.fn.fnamemodify(vim.v.this_session, ":t:r")
-                or ""
-
-            local context = join({ "󰉋 " .. directory, git, diff, diagnostics, lsp }, "  │  ")
-            local right = join({ session, fileinfo, search }, "  │  ")
-            local scrollbar = horizontal_scrollbar()
-            if scrollbar ~= "" then
-                right = join({ scrollbar, right }, "  │  ")
-            end
-            local location = string.format("%d:%d", vim.fn.line("."), vim.fn.col("."))
-
-            return statusline.combine_groups({
-                { hl = mode_group, strings = { mode } },
-                { hl = "Nvim2StatusContext", strings = { context } },
-                "%<",
-                { hl = "Nvim2StatusFile", strings = { filename } },
-                "%=",
-                { hl = "Nvim2StatusInfo", strings = { right } },
-                { hl = "Nvim2StatusLocation", strings = { location } },
-            })
-        end,
-        inactive = function()
-            return statusline.combine_groups({
-                "%<",
-                {
-                    hl = "Nvim2StatusContext",
-                    strings = { statusline.section_filename({ trunc_width = 140 }) },
-                },
-                "%=",
-            })
-        end,
-    },
-})
+-- Statusline (lualine, see lua/config/statusline.lua) and buffer tabline.
+require("config.statusline").setup()
 require("mini.tabline").setup({
     show_icons = true,
     tabpage_section = "right",
@@ -533,6 +469,19 @@ require("solarized-osaka").setup({
 
 require("base46").setup({ transparency = true })
 
+require("rose-pine").setup()
+
+-- Kanagawa Dragon with no background of its own, so the terminal's pure black shows through.
+-- `background` picks the variant for :colorscheme kanagawa, so it has to say dragon too.
+require("kanagawa").setup({
+    theme = "dragon",
+    background = { dark = "dragon", light = "lotus" },
+    transparent = true,
+    colors = { theme = { all = { ui = { bg_gutter = "none" } } } },
+})
+
+require("gruvbox").setup({ contrast = "hard", transparent_mode = true })
+
 local transparent_groups = {
     "Normal",
     "NormalNC",
@@ -603,10 +552,9 @@ vim.api.nvim_create_autocmd("FileType", {
             vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
             vim.wo.foldlevel = 99
         end
-        if vim.tbl_contains({ "typescript", "typescriptreact" }, vim.bo[event.buf].filetype) then
-            vim.bo[event.buf].cindent = true
-            vim.bo[event.buf].indentexpr = ""
-        elseif treesitter_ok then
+        -- Treesitter indents every language, TS/TSX included (cindent read object keys
+        -- like `name:` as C labels and pushed them to column 0 while typing).
+        if treesitter_ok then
             vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end
     end,

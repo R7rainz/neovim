@@ -97,6 +97,10 @@ end
 -- The colorscheme's own lualine colours, filled across the whole bar. The cached "auto"
 -- theme is dropped first so a :colorscheme switch rebuilds it from the new scheme.
 local function colorscheme_theme()
+    -- lualine has no "gruvbox-light" theme by that name (auto would guess a black bar).
+    if vim.g.colors_name == "gruvbox-light" then
+        return require("lualine.themes.gruvbox_light")
+    end
     package.loaded["lualine.themes.auto"] = nil
     return require("lualine.themes.auto")
 end

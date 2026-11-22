@@ -229,6 +229,7 @@ end
 local function pick_theme()
     local themes = {
         { label = "Gruvbox (dark hard)", name = "gruvbox" },
+        { label = "Gruvbox (light soft)", name = "gruvbox-light" },
         { label = "Kanagawa", name = "kanagawa" },
         { label = "Rosé Pine", name = "rose-pine" },
         { label = "Solarized Osaka", name = "solarized-osaka" },

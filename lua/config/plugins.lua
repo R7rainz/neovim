@@ -503,6 +503,10 @@ local transparent_groups = {
 }
 
 local function setup_transparency()
+    -- The light theme keeps its own background (dark text can't sit on a dark terminal).
+    if vim.g.colors_name == "gruvbox-light" then
+        return
+    end
     for _, group in ipairs(transparent_groups) do
         local highlights = vim.api.nvim_get_hl(0, { name = group, link = false })
         highlights.bg = "NONE"
@@ -513,6 +517,17 @@ end
 vim.api.nvim_create_autocmd("ColorScheme", {
     desc = "Keep theme surfaces transparent",
     callback = setup_transparency,
+})
+
+-- Every theme except gruvbox-light is dark; reset 'background' so leaving the light theme
+-- doesn't make Kanagawa or Rosé Pine pick their light variants.
+vim.api.nvim_create_autocmd("ColorSchemePre", {
+    desc = "Dark background for the dark themes",
+    callback = function(ev)
+        if ev.match ~= "gruvbox-light" then
+            vim.o.background = "dark"
+        end
+    end,
 })
 
 require("nvim-treesitter").setup()

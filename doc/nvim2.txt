@@ -348,6 +348,7 @@ The configured dark colorschemes are:
     :colorscheme base46-gruvchad GruvChad dark-hard palette
     :colorscheme cursor-dark Cursor Dark palette
     :colorscheme gruvbox          Gruvbox dark, hard contrast
+    :colorscheme gruvbox-light    Gruvbox light, soft contrast, own background
     :colorscheme kanagawa         Kanagawa Dragon, transparent background
     :colorscheme rose-pine        Rosé Pine (main) palette
     :colorscheme tokyonight-night Tokyo Night dark palette

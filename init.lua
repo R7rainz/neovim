@@ -18,6 +18,7 @@ local supported_themes = {
     edge = true,
     ["base46-gruvchad"] = true,
     gruvbox = true,
+    ["gruvbox-light"] = true,
     kanagawa = true,
     ["rose-pine"] = true,
     ["solarized-osaka"] = true,
